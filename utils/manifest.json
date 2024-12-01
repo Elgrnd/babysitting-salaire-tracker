@@ -1,0 +1,17 @@
+{
+  "name": "My BabySittings",
+  "short_name": "MyBabySittings",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4CAF50",
+  "scope": "/",
+  "description": "Application pour gérer les babysittings réalisés.",
+  "icons": [
+    {
+      "src": "ressources/img/logo.jpg",
+      "type": "image/jpg",
+      "sizes": "48x48 72x72 96x96"
+    }
+  ]
+}

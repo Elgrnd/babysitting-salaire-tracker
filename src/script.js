@@ -13,11 +13,20 @@ async function initDb() {
         console.log("Base de données restaurée depuis localStorage");
     } else {
         db = new SQL.Database(); // Nouvelle base
-        db.run("CREATE TABLE IF NOT EXISTS babysittings (id INTEGER PRIMARY KEY AUTOINCREMENT, date TEXT, volume_horaire INTEGER, salaire REAL)");
+        db.run(`CREATE TABLE IF NOT EXISTS babysittings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            date TEXT, 
+            volume_horaire INTEGER, 
+            salaire REAL
+        )`);
+        db.run(`CREATE TABLE IF NOT EXISTS utilisateur (
+            nom TEXT PRIMARY KEY, 
+            prenom TEXT
+        )`);
         console.log("Nouvelle base de données créée");
     }
 
-    afficherBabySittings(); // Afficher les données existantes
+    checkUtilisateur(); // Vérifier si un utilisateur existe
 }
 
 function sauvegarderDb() {
@@ -26,6 +35,48 @@ function sauvegarderDb() {
         localStorage.setItem("babysittingDb", JSON.stringify(Array.from(data)));
         console.log("Base de données sauvegardée dans localStorage");
     }
+}
+
+function afficherFormulaireUtilisateur() {
+    const container = document.getElementById("userContainer");
+    container.innerHTML = `
+        <h2>Bienvenue !</h2>
+        <p>Veuillez entrer vos informations :</p>
+        <input type="text" id="nom" placeholder="Nom">
+        <input type="text" id="prenom" placeholder="Prénom">
+        <button onclick="ajouterUtilisateur()">Enregistrer</button>
+    `;
+}
+
+function ajouterUtilisateur() {
+    const nom = document.getElementById('nom').value.trim();
+    const prenom = document.getElementById('prenom').value.trim();
+
+    if (!nom || !prenom) {
+        alert("Veuillez remplir tous les champs !");
+        return;
+    }
+
+    db.run("INSERT INTO utilisateur (nom, prenom) VALUES (?, ?)", [nom, prenom]);
+    sauvegarderDb();
+    afficherMessageBienvenue(prenom);
+}
+
+function checkUtilisateur() {
+    const result = db.exec("SELECT * FROM utilisateur");
+
+    if (result.length > 0 && result[0].values.length > 0) {
+        const utilisateur = result[0].values[0];
+        const prenom = utilisateur[1]; // Index 1 correspond au prénom
+        afficherMessageBienvenue(prenom);
+    } else {
+        afficherFormulaireUtilisateur();
+    }
+}
+
+function afficherMessageBienvenue(prenom) {
+    const container = document.getElementById("userContainer");
+    container.innerHTML = `<h2>Bonjour, ${prenom} !</h2>`;
 }
 
 function ajouterBabySitting() {
@@ -75,4 +126,3 @@ function afficherBabySittings() {
 
 window.addEventListener("beforeunload", sauvegarderDb); // Sauvegarder avant de quitter la page
 initDb();
-

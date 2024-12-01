@@ -9,7 +9,7 @@
   "description": "Application pour gérer les babysittings réalisés.",
   "icons": [
     {
-      "src": "ressources/img/logo.jpg",
+      "src": "../ressources/img/logo.jpg",
       "type": "image/jpg",
       "sizes": "48x48 72x72 96x96"
     }

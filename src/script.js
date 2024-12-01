@@ -10,6 +10,10 @@ async function initDb() {
     if (savedDb) {
         const uint8Array = new Uint8Array(JSON.parse(savedDb));
         db = new SQL.Database(uint8Array); // Charger la base sauvegardée
+        db.run(`CREATE TABLE IF NOT EXISTS utilisateur (
+            nom TEXT PRIMARY KEY, 
+            prenom TEXT
+        )`);
         console.log("Base de données restaurée depuis localStorage");
     } else {
         db = new SQL.Database(); // Nouvelle base

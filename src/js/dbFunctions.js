@@ -147,3 +147,4 @@ function afficherBabySittings() {
 
 window.addEventListener("beforeunload", sauvegarderDb); // Sauvegarder avant de quitter la page
 initDb();
+

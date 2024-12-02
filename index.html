@@ -83,8 +83,10 @@
                     installingWorker.onstatechange = () => {
                         if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
                             console.log('Une nouvelle version est disponible');
-                            // Le bouton n'est affiché que si le service worker est en attente
-                            document.getElementById('updateButton').style.display = 'block';
+                            // Afficher le bouton si le service worker est installé mais en attente
+                            if (!registration.waiting) {
+                                document.getElementById('updateButton').style.display = 'none';
+                            }
                         }
                     };
                 };

@@ -20,10 +20,9 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// Activation du service worker avec gestion manuelle
+// Activation du service worker
 self.addEventListener('activate', (event) => {
     const cacheWhitelist = [CACHE_NAME];
-
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
@@ -35,7 +34,8 @@ self.addEventListener('activate', (event) => {
                 })
             );
         }).then(() => {
-            console.log("Service Worker activé, prêt à être mis à jour");
+            // Pas de skipWaiting automatique, il faut l'activer manuellement
+            console.log("Service Worker prêt à être mis à jour");
         })
     );
 });
@@ -47,7 +47,7 @@ self.addEventListener("fetch", (event) => {
             .then(response => {
                 return response || fetch(event.request).then((fetchResponse) => {
                     return caches.open(CACHE_NAME).then((cache) => {
-                        // Mettre en cache la réponse de la requête (si nécessaire)
+                        // Mettre en cache la réponse de la requête
                         cache.put(event.request, fetchResponse.clone());
                         return fetchResponse;
                     });
@@ -56,9 +56,9 @@ self.addEventListener("fetch", (event) => {
     );
 });
 
-// Attendre qu'une nouvelle version soit prête à être activée (ne pas activer automatiquement)
+// Attente d'un message pour forcer l'activation
 self.addEventListener('message', (event) => {
     if (event.data && event.data.action === 'skipWaiting') {
-        self.skipWaiting();  // Forcer l'activation immédiate seulement quand l'utilisateur l'a demandé
+        self.skipWaiting();  // Activation manuelle
     }
 });

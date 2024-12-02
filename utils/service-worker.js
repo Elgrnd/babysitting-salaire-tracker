@@ -7,32 +7,20 @@ const urlsToCache = [
 ];
 
 // Installation du service worker
-self.addEventListener("install", (event) => {
+self.addEventListener('install', (event) => {
     event.waitUntil(
-        caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(urlsToCache).catch((error) => {
-                console.error("Échec lors de l'ajout au cache :", error);
-            });
-        })
+        caches.open(CACHE_NAME)
+            .then((cache) => cache.addAll(urlsToCache))
+            .then(() => self.skipWaiting()) // Retirer skipWaiting si vous ne voulez pas une activation immédiate
     );
 });
 
-self.addEventListener('message', (event) => {
-    if (event.data.action === 'skipWaiting') {
-        self.skipWaiting(); // Passer immédiatement à la nouvelle version
-    }
-});
-
-// Ajouter une logique pour forcer le rechargement des clients après l'activation
 self.addEventListener('activate', (event) => {
     event.waitUntil(
-        clients.claim().then(() => {
-            clients.matchAll().then((clients) => {
-                clients.forEach((client) => client.navigate(client.url)); // Recharger toutes les pages ouvertes
-            });
-        })
+        self.clients.claim()  // Assurez-vous de ne pas appeler self.clients.claim() immédiatement
     );
 });
+
 
 
 // Interception des requêtes

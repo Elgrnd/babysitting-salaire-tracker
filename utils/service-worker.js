@@ -35,10 +35,17 @@ self.addEventListener('activate', (event) => {
                 })
             );
         }).then(() => {
+            // Ne pas appeler skipWaiting ici
             console.log("Service Worker activé, prêt à être mis à jour");
-            // Ajoutez ici une logique pour ne pas activer immédiatement
         })
     );
+});
+
+// Attendre un message pour forcer l'activation
+self.addEventListener('message', (event) => {
+    if (event.data && event.data.action === 'skipWaiting') {
+        self.skipWaiting();  // Forcer l'activation immédiate
+    }
 });
 
 // Interception des requêtes pour gérer le cache
@@ -55,11 +62,4 @@ self.addEventListener("fetch", (event) => {
                 });
             })
     );
-});
-
-// Attendez qu'une nouvelle version soit prête à être activée
-self.addEventListener('message', (event) => {
-    if (event.data && event.data.action === 'skipWaiting') {
-        self.skipWaiting();  // Forcer l'activation immédiate
-    }
 });

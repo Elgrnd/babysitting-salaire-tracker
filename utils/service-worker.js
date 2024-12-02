@@ -1,4 +1,4 @@
-const CACHE_NAME = "pwa-cache-v00000111112222222222";
+const CACHE_NAME = "pwa-cache-v000001111122222222223333333";
 const urlsToCache = [
     "/",
     "/ressources/css/styles.css",
@@ -29,8 +29,10 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 cacheNames.map((cache) => {
                     if (!cacheWhitelist.includes(cache)) {
+                        console.log("j'ai delete le cache")
                         // Supprimer les anciens caches
                         return caches.delete(cache);
+
                     }
                 })
             );

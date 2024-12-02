@@ -68,6 +68,7 @@
 
                 // Vérifier si un nouveau service worker est en attente d'activation
                 if (registration.waiting) {
+                    console.log('jattends')
                     // Afficher le bouton pour mettre à jour l'application
                     document.getElementById('updateButton').style.display = 'block';
 
@@ -80,7 +81,7 @@
                 // Écouter les mises à jour du service worker
                 registration.onupdatefound = () => {
                     const installingWorker = registration.installing;
-
+                    console.log('j\'ai trouvé une maj')
                     installingWorker.onstatechange = () => {
                         // Si l'état du service worker est 'installed', nous avons une nouvelle version
                         if (installingWorker.state === 'installed') {

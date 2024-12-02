@@ -60,44 +60,43 @@
 </footer>
 <script>
     // Enregistrement du service worker
-    // Enregistrement du service worker
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('utils/service-worker.js').then(registration => {
+            navigator.serviceWorker.register('utils/service-worker.js', { updateViaCache: 'none' }).then(registration => {
                 console.log('Service Worker enregistré avec succès', registration);
 
-                // Vérifier si un nouveau service worker est en attente d'activation
-                if (registration.waiting) {
-                    // Afficher le bouton pour la mise à jour
-                    document.getElementById('updateButton').style.display = 'block';
-
-                    // Lorsque l'utilisateur appuie sur le bouton, envoyer un message pour activer la nouvelle version
-                    document.getElementById('updateButton').addEventListener('click', () => {
-                        registration.waiting.postMessage({ action: 'skipWaiting' });
-                        // Lorsque l'activation est effectuée, recharger la page
-                        window.location.reload();
-                    });
-                }
-
-                // Écouter les mises à jour du service worker
+                // Écouter les changements d'état du service worker
                 registration.onupdatefound = () => {
                     const installingWorker = registration.installing;
 
                     installingWorker.onstatechange = () => {
                         if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
                             console.log('Une nouvelle version est disponible');
-                            // Ici on s'assure que le bouton n'apparaît que lorsqu'il faut mettre à jour manuellement
-                            if (!registration.waiting) {
-                                document.getElementById('updateButton').style.display = 'none';
+                            if (registration.waiting) {
+                                document.getElementById('updateButton').style.display = 'block';
                             }
                         }
                     };
                 };
+
+                // Vérifier si un service worker est déjà en attente
+                if (registration.waiting) {
+                    console.log('Un service worker est en attente');
+                    document.getElementById('updateButton').style.display = 'block';
+
+                    // Activation manuelle via le bouton
+                    document.getElementById('updateButton').addEventListener('click', () => {
+                        registration.waiting.postMessage({ action: 'skipWaiting' });
+                        // Recharger la page après activation
+                        window.location.reload();
+                    });
+                }
             }).catch(error => {
                 console.log('Échec de l\'enregistrement du service worker:', error);
             });
         });
     }
+
 
 </script>
 

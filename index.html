@@ -6,9 +6,16 @@
     <title>Gestion Babysitting</title>
     <!-- Inclusion de la bibliothèque SQL.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/sql-wasm.js"></script>
-    <script src="src/script.js"></script>
+    <script src="src/dbFunctions.js"></script>
+    <script src="src/scripts.js"></script>
     <link rel="stylesheet" href="ressources/css/styles.css">
     <link rel="manifest" href="utils/manifest.json">
+    <link
+            rel="stylesheet"
+            href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+            integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+            crossorigin="anonymous"
+    />
 </head>
 <body>
 <script>
@@ -39,6 +46,31 @@
 
 </main>
 <footer>
+
+    <div class="navigation">
+        <ul>
+            <li class="list active" data-color="#dc143c">
+                <a href="#">
+                    <span class="icon"><i class="far fa-home"></i></span>
+                </a>
+            </li>
+            <li class="list" data-color="#05c46b">
+                <a href="#">
+                    <span class="icon"><i class="far fa-comment"></i></span>
+                </a>
+            </li>
+            <li class="list" data-color="#0fbcf9">
+                <a href="#">
+                    <span class="icon"><i class="far fa-question-circle"></i></span>
+                </a>
+            </li>
+            <li class="list" data-color="#ffa801">
+                <a href="#">
+                    <span class="icon"><i class="far fa-cog"></i></span>
+                </a>
+            </li>
+        </ul>
+    </div>
 
 </footer>
 

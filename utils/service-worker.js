@@ -11,7 +11,6 @@ self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => cache.addAll(urlsToCache))
-            .then(() => self.skipWaiting()) // Retirer skipWaiting si vous ne voulez pas une activation immédiate
     );
 });
 

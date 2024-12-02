@@ -1,4 +1,4 @@
-const CACHE_NAME = "pwa-cache-v0.1";
+const CACHE_NAME = "pwa-cache-v0000011111";
 const urlsToCache = [
     "/",
     "/ressources/css/styles.css",
@@ -23,6 +23,7 @@ self.addEventListener('install', (event) => {
 // Activation du service worker
 self.addEventListener('activate', (event) => {
     const cacheWhitelist = [CACHE_NAME];
+
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
@@ -34,8 +35,8 @@ self.addEventListener('activate', (event) => {
                 })
             );
         }).then(() => {
-            // Pas de skipWaiting automatique, il faut l'activer manuellement
-            console.log("Service Worker prêt à être mis à jour");
+            // Ne pas activer immédiatement mais attendre l'action manuelle
+            console.log("Service Worker activé, prêt à être mis à jour");
         })
     );
 });
@@ -47,7 +48,7 @@ self.addEventListener("fetch", (event) => {
             .then(response => {
                 return response || fetch(event.request).then((fetchResponse) => {
                     return caches.open(CACHE_NAME).then((cache) => {
-                        // Mettre en cache la réponse de la requête
+                        // Mettre en cache la réponse de la requête (si nécessaire)
                         cache.put(event.request, fetchResponse.clone());
                         return fetchResponse;
                     });
@@ -56,10 +57,10 @@ self.addEventListener("fetch", (event) => {
     );
 });
 
-// Attente d'un message pour forcer l'activation
+// Écouter les messages pour forcer la mise à jour du service worker
 self.addEventListener('message', (event) => {
     if (event.data && event.data.action === 'skipWaiting') {
-        self.skipWaiting();  // Activation manuelle
-        console.log("activé")
+        self.skipWaiting();  // Forcer l'activation immédiate
+        console.log("activé");
     }
 });

@@ -27,7 +27,6 @@
 
     <h2 id="historique"></h2>
     <table id="babysittingTable"></table>
-    <p>help</p>
 </main>
 <footer>
     <button id="updateButton" style="display:none;">Mettre à jour l'application</button>
@@ -60,7 +59,7 @@
 
 </footer>
 <script>
-    // Enregistrement du service worker
+    // Si un service worker est installé, on ajoute un bouton de mise à jour
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('utils/service-worker.js').then(registration => {
@@ -68,7 +67,7 @@
 
                 // Vérifier si un nouveau service worker est en attente d'activation
                 if (registration.waiting) {
-                    // Afficher le bouton pour la mise à jour
+                    // Afficher le bouton pour mettre à jour l'application
                     document.getElementById('updateButton').style.display = 'block';
 
                     // Lorsque l'utilisateur appuie sur le bouton, envoyer un message pour activer la nouvelle version
@@ -82,11 +81,12 @@
                     const installingWorker = registration.installing;
 
                     installingWorker.onstatechange = () => {
-                        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            console.log('Une nouvelle version est disponible');
-                            // Afficher le bouton si le service worker est installé mais en attente
-                            if (!registration.waiting) {
-                                document.getElementById('updateButton').style.display = 'none';
+                        // Si l'état du service worker est 'installed', nous avons une nouvelle version
+                        if (installingWorker.state === 'installed') {
+                            if (navigator.serviceWorker.controller) {
+                                console.log('Une nouvelle version est disponible');
+                            } else {
+                                console.log('L\'application est installée pour la première fois');
                             }
                         }
                     };

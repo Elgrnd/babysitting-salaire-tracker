@@ -133,7 +133,8 @@ function afficherBabySittings() {
     if (result.length > 0) {
         result[0].values.forEach(row => {
             const tr = document.createElement("tr");
-            row.forEach(value => {
+            // Ignorer la première colonne (index 0)
+            row.slice(1).forEach(value => {
                 const td = document.createElement("td");
                 td.textContent = value;
                 tr.appendChild(td);
@@ -141,6 +142,7 @@ function afficherBabySittings() {
             table.appendChild(tr);
         });
     }
+    
 }
 
 window.addEventListener("beforeunload", sauvegarderDb); // Sauvegarder avant de quitter la page

@@ -11,6 +11,7 @@
 
 h2 {
     text-align: center;
+    margin: 15px;
 }
 
 body {
@@ -87,4 +88,36 @@ button {
 
 .navigation ul li a .icon i {
     font-size: 30px;
+}
+
+table {
+    width: 100%;
+    padding: 10px;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #1562A2;
+}
+
+th:first-child {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+
+th:last-child {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+
+td {
+    background-color: #C1C2C5;
+    color: #1A1B1E;
+    border: 1px solid;
+}
+
+td, tr, th{
+    text-align: center;
+    font-size: 16px;
+    padding: 10px 0 10px 0;
 }

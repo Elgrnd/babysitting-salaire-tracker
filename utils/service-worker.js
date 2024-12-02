@@ -1,4 +1,4 @@
-const CACHE_NAME = "pwa-cache-v1";
+const CACHE_NAME = "pwa-cache-v0.1";
 const urlsToCache = [
     "/",
     "/ressources/css/styles.css",
@@ -60,5 +60,6 @@ self.addEventListener("fetch", (event) => {
 self.addEventListener('message', (event) => {
     if (event.data && event.data.action === 'skipWaiting') {
         self.skipWaiting();  // Activation manuelle
+        console.log("activé")
     }
 });

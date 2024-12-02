@@ -25,7 +25,6 @@ align-items: center;">
         window.addEventListener('load', () => {
             navigator.serviceWorker.getRegistration().then(registration => {
                 if (registration) {
-                    // Vérification si une nouvelle version du service worker est disponible
                     registration.onupdatefound = () => {
                         const installingWorker = registration.installing;
                         installingWorker.onstatechange = () => {
@@ -61,6 +60,7 @@ align-items: center;">
     }
 
 </script>
+
 
 <header>
 

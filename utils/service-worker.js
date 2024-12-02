@@ -2,7 +2,7 @@ const CACHE_NAME = "pwa-cache-v1";
 const urlsToCache = [
     "/",
     "/ressources/css/styles.css",
-    "/src/js/dbFunctions.js",
+    "src/js/dbFunctions.js",
     "/ressources/img/logo.jpg",
 ];
 
@@ -20,7 +20,7 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// Activation du service worker avec une gestion manuelle de l'activation
+// Activation du service worker - Activation manuelle
 self.addEventListener('activate', (event) => {
     const cacheWhitelist = [CACHE_NAME];
 
@@ -35,8 +35,8 @@ self.addEventListener('activate', (event) => {
                 })
             );
         }).then(() => {
-            // Ne pas activer immédiatement mais attendre l'action manuelle
             console.log("Service Worker activé, prêt à être mis à jour");
+            // Ajoutez ici une logique pour ne pas activer immédiatement
         })
     );
 });

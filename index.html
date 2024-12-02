@@ -19,7 +19,6 @@
 </head>
 <body>
 <script>
-    // Si un service worker est installé, on ajoute un bouton de mise à jour
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
             navigator.serviceWorker.register('utils/service-worker.js').then(registration => {
@@ -41,7 +40,6 @@
                     const installingWorker = registration.installing;
 
                     installingWorker.onstatechange = () => {
-                        // Si l'état du service worker est 'installed', nous avons une nouvelle version
                         if (installingWorker.state === 'installed') {
                             if (navigator.serviceWorker.controller) {
                                 console.log('Une nouvelle version est disponible');
@@ -57,6 +55,7 @@
         });
     }
 </script>
+
 <header>
 
 </header>

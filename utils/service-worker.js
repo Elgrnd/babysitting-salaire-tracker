@@ -44,6 +44,7 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('message', (event) => {
     if (event.data && event.data.action === 'skipWaiting') {
         self.skipWaiting();  // L'activation manuelle est ici
+        console.log('activé')
     }
 });
 

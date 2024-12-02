@@ -3,7 +3,9 @@ const urlsToCache = [
     "/",
     "/styles.css",
     "/dbFunctions.js",
-    "/logo.jpg"
+    "/logo.jpg",
+    "/new.html",
+    "/manifest.json"
 ];
 
 // Installation du service worker

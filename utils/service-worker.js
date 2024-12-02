@@ -2,7 +2,7 @@ const CACHE_NAME = "pwa-cache-v1";
 const urlsToCache = [
     "/",
     "/ressources/css/styles.css",
-    "src/js/dbFunctions.js",
+    "/src/js/dbFunctions.js",
     "/ressources/img/logo.jpg",
 ];
 
@@ -20,7 +20,7 @@ self.addEventListener('install', (event) => {
     );
 });
 
-// Activation du service worker - Activation manuelle
+// Activation du service worker avec gestion manuelle
 self.addEventListener('activate', (event) => {
     const cacheWhitelist = [CACHE_NAME];
 
@@ -35,17 +35,9 @@ self.addEventListener('activate', (event) => {
                 })
             );
         }).then(() => {
-            // Ne pas appeler skipWaiting ici
             console.log("Service Worker activé, prêt à être mis à jour");
         })
     );
-});
-
-// Attendre un message pour forcer l'activation
-self.addEventListener('message', (event) => {
-    if (event.data && event.data.action === 'skipWaiting') {
-        self.skipWaiting();  // Forcer l'activation immédiate
-    }
 });
 
 // Interception des requêtes pour gérer le cache
@@ -62,4 +54,11 @@ self.addEventListener("fetch", (event) => {
                 });
             })
     );
+});
+
+// Attendre qu'une nouvelle version soit prête à être activée (pas de skipWaiting() automatique)
+self.addEventListener('message', (event) => {
+    if (event.data && event.data.action === 'skipWaiting') {
+        self.skipWaiting();  // Forcer l'activation immédiate seulement quand l'utilisateur l'a demandé
+    }
 });

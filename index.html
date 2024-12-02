@@ -18,46 +18,6 @@
     />
 </head>
 <body>
-<script>
-    if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('utils/service-worker.js').then(registration => {
-                console.log('Service Worker enregistré avec succès', registration);
-
-                // Vérifier si un nouveau service worker est en attente d'activation
-                if (registration.waiting) {
-                    // Afficher le bouton pour mettre à jour l'application
-                    document.getElementById('updateButton').style.display = 'block';
-
-                    // Lorsque l'utilisateur appuie sur le bouton, envoyer un message pour activer la nouvelle version
-                    document.getElementById('updateButton').addEventListener('click', () => {
-                        registration.waiting.postMessage({ action: 'skipWaiting' });
-                    });
-                }
-
-                // Écouter les mises à jour du service worker
-                registration.onupdatefound = () => {
-                    const installingWorker = registration.installing;
-
-                    installingWorker.onstatechange = () => {
-                        // Si l'état du service worker est 'installed', nous avons une nouvelle version
-                        if (installingWorker.state === 'installed') {
-                            if (navigator.serviceWorker.controller) {
-                                console.log('Une nouvelle version est disponible');
-                            } else {
-                                console.log('L\'application est installée pour la première fois');
-                            }
-                        }
-                    };
-                };
-            }).catch(error => {
-                console.log('Échec de l\'enregistrement du service worker:', error);
-            });
-        });
-    }
-</script>
-
-
 <header>
 
 </header>
@@ -67,10 +27,10 @@
 
     <h2 id="historique"></h2>
     <table id="babysittingTable"></table>
-    <p>cacaaaaaaaaaaaaaaaaa</p>
-
 </main>
 <footer>
+    <button id="updateButton" style="display:none;">Mettre à jour l'application</button>
+
 
     <div class="navigation">
         <ul>
@@ -98,6 +58,41 @@
     </div>
 
 </footer>
+<script>
+    // Enregistrement du service worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('utils/service-worker.js').then(registration => {
+                console.log('Service Worker enregistré avec succès', registration);
+
+                // Vérification si un nouveau service worker est en attente
+                if (registration.waiting) {
+                    // Afficher le bouton de mise à jour si un service worker est en attente
+                    document.getElementById('updateButton').style.display = 'block';
+
+                    // Lorsque l'utilisateur clique sur le bouton, envoyer un message pour activer la nouvelle version
+                    document.getElementById('updateButton').addEventListener('click', () => {
+                        registration.waiting.postMessage({ action: 'skipWaiting' });
+                    });
+                }
+
+                // Écouter les mises à jour du service worker
+                registration.onupdatefound = () => {
+                    const installingWorker = registration.installing;
+
+                    installingWorker.onstatechange = () => {
+                        // Si le service worker est installé et qu'il est en attente, afficher le bouton
+                        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                            console.log('Une nouvelle version est disponible');
+                        }
+                    };
+                };
+            }).catch(error => {
+                console.log('Échec de l\'enregistrement du service worker:', error);
+            });
+        });
+    }
+</script>
 
 </body>
 </html>

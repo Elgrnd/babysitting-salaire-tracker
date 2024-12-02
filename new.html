@@ -22,7 +22,7 @@
 </header>
 <main>
     <h2>Ajouter un babysitting</h2>
-    <form onsubmit="ajouterBabySitting(); return false;">
+    <form onsubmit="ajouterBabySitting(); this.form.reset(); return false;">
         <input type="date" id="date" required>
         <input type="number" id="volumeHoraire" placeholder="Volume horaire" required>
         <input type="number" step="0.01" id="salaire" placeholder="Salaire" required>
@@ -33,14 +33,19 @@
 
     <div class="navigation">
         <ul>
-            <li class="list active" data-color="#dc143c">
+            <li class="list" data-color="#dc143c">
                 <a href="index.html">
                     <span class="icon"><i class="far fa-home"></i></span>
                 </a>
             </li>
             <li class="list" data-color="#05c46b">
                 <a href="new.html">
-                    <span class="icon"><i class="far fa-plus" style="color: #db0f0f"></i></span>
+                    <span class="icon"><i class="far fa-plus" style="color: #1562A2"></i></span>
+                </a>
+            </li>
+            <li class="list" data-color="#0fbcf9">
+                <a href="#">
+                    <span class="icon"><i class="far fa-chart-line"></i></span>
                 </a>
             </li>
             <li class="list" data-color="#0fbcf9">

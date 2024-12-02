@@ -31,7 +31,6 @@ async function initDb() {
     }
 
     checkUtilisateur(); // Vérifier si un utilisateur existe
-    afficherBabySittings();
 }
 
 function sauvegarderDb() {
@@ -47,9 +46,11 @@ function afficherFormulaireUtilisateur() {
     container.innerHTML = `
         <h2>Bienvenue !</h2>
         <p>Veuillez entrer vos informations :</p>
+        <form>
         <input type="text" id="nom" placeholder="Nom">
         <input type="text" id="prenom" placeholder="Prénom">
         <button onclick="ajouterUtilisateur()">Enregistrer</button>
+        </form>
     `;
 }
 
@@ -74,6 +75,7 @@ function checkUtilisateur() {
         const utilisateur = result[0].values[0];
         const prenom = utilisateur[1]; // Index 1 correspond au prénom
         afficherMessageBienvenue(prenom);
+        afficherBabySittings();
     } else {
         afficherFormulaireUtilisateur();
     }
@@ -111,9 +113,13 @@ function afficherBabySittings() {
     }
 
     const result = db.exec("SELECT * FROM babysittings");
+    const titre = document.getElementById("historique");
     const table = document.getElementById("babysittingTable");
 
-    table.innerHTML = "<tr><th>Date</th><th>Volume Horaire</th><th>Salaire</th></tr>";
+    titre.innerHTML = "Historique des babysittings"
+    if (result.length !== 0) {
+        table.innerHTML = "<tr><th>Date</th><th>Volume Horaire</th><th>Salaire</th></tr>";
+    }
 
     if (result.length > 0) {
         result[0].values.forEach(row => {

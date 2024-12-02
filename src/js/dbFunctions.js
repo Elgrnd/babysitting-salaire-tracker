@@ -31,6 +31,7 @@ async function initDb() {
     }
 
     checkUtilisateur(); // Vérifier si un utilisateur existe
+    afficherBabySittings();
 }
 
 function sauvegarderDb() {
@@ -100,7 +101,6 @@ function ajouterBabySitting() {
 
     db.run("INSERT INTO babysittings (date, volume_horaire, salaire) VALUES (?, ?, ?)", [date, volumeHoraire, salaire]);
 
-    afficherBabySittings();
     sauvegarderDb(); // Sauvegarder la base après chaque modification
 }
 

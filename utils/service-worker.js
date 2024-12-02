@@ -1,18 +1,18 @@
 const CACHE_NAME = "pwa-cache-v1";
 const urlsToCache = [
     "/",
-    "/styles.css",
-    "/dbFunctions.js",
-    "/logo.jpg",
-    "/new.html",
-    "/manifest.json"
+    "/ressources/css/styles.css",
+    "src/js/dbFunctions.js",
+    "ressources/img//logo.jpg",
 ];
 
 // Installation du service worker
 self.addEventListener("install", (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then((cache) => {
-            return cache.addAll(urlsToCache);
+            return cache.addAll(urlsToCache).catch((error) => {
+                console.error("Échec lors de l'ajout au cache :", error);
+            });
         })
     );
 });

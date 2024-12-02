@@ -56,7 +56,7 @@ self.addEventListener("fetch", (event) => {
     );
 });
 
-// Attendre qu'une nouvelle version soit prête à être activée (pas de skipWaiting() automatique)
+// Attendre qu'une nouvelle version soit prête à être activée (ne pas activer automatiquement)
 self.addEventListener('message', (event) => {
     if (event.data && event.data.action === 'skipWaiting') {
         self.skipWaiting();  // Forcer l'activation immédiate seulement quand l'utilisateur l'a demandé

@@ -66,12 +66,12 @@
             navigator.serviceWorker.register('utils/service-worker.js').then(registration => {
                 console.log('Service Worker enregistré avec succès', registration);
 
-                // Vérification si un nouveau service worker est en attente
+                // Vérifier si un nouveau service worker est en attente d'activation
                 if (registration.waiting) {
-                    // Afficher le bouton de mise à jour si un service worker est en attente
+                    // Afficher le bouton pour la mise à jour
                     document.getElementById('updateButton').style.display = 'block';
 
-                    // Lorsque l'utilisateur clique sur le bouton, envoyer un message pour activer la nouvelle version
+                    // Lorsque l'utilisateur appuie sur le bouton, envoyer un message pour activer la nouvelle version
                     document.getElementById('updateButton').addEventListener('click', () => {
                         registration.waiting.postMessage({ action: 'skipWaiting' });
                     });
@@ -82,9 +82,10 @@
                     const installingWorker = registration.installing;
 
                     installingWorker.onstatechange = () => {
-                        // Si le service worker est installé et qu'il est en attente, afficher le bouton
                         if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
                             console.log('Une nouvelle version est disponible');
+                            // Le bouton n'est affiché que si le service worker est en attente
+                            document.getElementById('updateButton').style.display = 'block';
                         }
                     };
                 };

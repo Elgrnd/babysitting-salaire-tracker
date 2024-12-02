@@ -17,20 +17,23 @@ self.addEventListener("install", (event) => {
     );
 });
 
-// Activation et nettoyage du cache
-self.addEventListener("activate", (event) => {
+self.addEventListener('message', (event) => {
+    if (event.data.action === 'skipWaiting') {
+        self.skipWaiting(); // Passer immédiatement à la nouvelle version
+    }
+});
+
+// Ajouter une logique pour forcer le rechargement des clients après l'activation
+self.addEventListener('activate', (event) => {
     event.waitUntil(
-        caches.keys().then((cacheNames) => {
-            return Promise.all(
-                cacheNames.map((cache) => {
-                    if (cache !== CACHE_NAME) {
-                        return caches.delete(cache);
-                    }
-                })
-            );
+        clients.claim().then(() => {
+            clients.matchAll().then((clients) => {
+                clients.forEach((client) => client.navigate(client.url)); // Recharger toutes les pages ouvertes
+            });
         })
     );
 });
+
 
 // Interception des requêtes
 self.addEventListener("fetch", (event) => {

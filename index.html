@@ -19,11 +19,24 @@
 </head>
 <body>
 <script>
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("utils/service-worker.js")
-            .then(() => console.log("Service Worker enregistré."))
-            .catch((error) => console.error("Service Worker échec : ", error));
-    }
+    if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('utils/service-worker.js').then((registration) => {
+        console.log('Service Worker enregistré.');
+
+        registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+
+            newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    console.log('Une mise à jour est disponible.');
+                    // Indiquer aux autres pages qu'une mise à jour est prête
+                    localStorage.setItem('updateAvailable', 'true');
+                }
+            });
+        });
+    });
+}
+
 </script>
 
 <header>
@@ -57,7 +70,7 @@
                 </a>
             </li>
             <li class="list" data-color="#0fbcf9">
-                <a href="#">
+                <a href="utile.html">
                     <span class="icon"><i class="far fa-question-circle"></i></span>
                 </a>
             </li>

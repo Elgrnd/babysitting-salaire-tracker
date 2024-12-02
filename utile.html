@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Ajouter babysitting</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/sql-wasm.js"></script>
+  <script src="src/js/dbFunctions.js"></script>
+  <script src="src/js/scripts.js"></script>
+  <link rel="stylesheet" href="ressources/css/styles.css">
+  <link rel="manifest" href="utils/manifest.json">
+  <link
+          rel="stylesheet"
+          href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+          integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+          crossorigin="anonymous"
+  />
+</head>
+<body>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const updateButton = document.getElementById('updateApp');
+
+    // Vérifier si une mise à jour est disponible
+    if (localStorage.getItem('updateAvailable') === 'true') {
+        updateButton.style.display = 'block'; // Afficher le bouton
+
+        // Ajout d'un événement pour appliquer la mise à jour
+        updateButton.addEventListener('click', () => {
+            navigator.serviceWorker.getRegistration().then((registration) => {
+                if (registration && registration.waiting) {
+                    console.log('Application de la mise à jour...');
+                    registration.waiting.postMessage({ action: 'skipWaiting' });
+                }
+            });
+        });
+
+        // Nettoyer l'indicateur après la mise à jour
+        localStorage.removeItem('updateAvailable');
+    }
+});
+
+  </script>
+
+  <header>
+
+  </header>
+  <main>
+    <button id="updateApp" style="display: none;">Mettre à jour l'application</button>
+  </main>
+  <footer>
+    <div class="navigation">
+      <ul>
+          <li class="list" data-color="#dc143c">
+              <a href="index.html" onclick="afficherBabySittings()">
+                  <span class="icon"><i class="far fa-home"></i></span>
+              </a>
+          </li>
+          <li class="list" data-color="#05c46b">
+              <a href="new.html">
+                  <span class="icon"><i class="far fa-plus"></i></span>
+              </a>
+          </li>
+          <li class="list" data-color="#0fbcf9">
+              <a href="#">
+                  <span class="icon"><i class="far fa-chart-line"></i></span>
+              </a>
+          </li>
+          <li class="list" data-color="#0fbcf9">
+              <a href="utile.html">
+                  <span class="icon"><i class="far fa-question-circle" style="color: #1562A2"></i></span>
+              </a>
+          </li>
+      </ul>
+  </div>
+
+</footer>
+  </footer>
+
+
+</body>
+</html>

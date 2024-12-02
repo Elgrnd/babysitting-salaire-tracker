@@ -18,7 +18,31 @@
     />
 </head>
 <body>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('utils/service-worker.js')
+                .then(registration => {
+                    console.log('Service Worker enregistré avec succès: ', registration);
 
+                    // Vérification de l'installation d'une nouvelle version du service worker
+                    registration.onupdatefound = () => {
+                        const installingWorker = registration.installing;
+                        installingWorker.onstatechange = () => {
+                            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // Nouvelle version disponible
+                                console.log('Nouvelle version du service worker trouvée!');
+                            }
+                        };
+                    };
+                })
+                .catch(error => {
+                    console.log('Échec de l\'enregistrement du Service Worker:', error);
+                });
+        });
+    }
+
+</script>
 <header>
 
 </header>

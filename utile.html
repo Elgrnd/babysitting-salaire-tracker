@@ -21,27 +21,45 @@ justify-content: center; /* Centre horizontalement */
 align-items: center;">
 
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const updateButton = document.getElementById('updateApp');
-
-        // Vérifier si une mise à jour est disponible
-        if (localStorage.getItem('updateAvailable') === 'true') {
-            updateButton.style.display = 'block'; // Afficher le bouton
-
-            // Ajout d'un événement pour appliquer la mise à jour
-            updateButton.addEventListener('click', () => {
-                navigator.serviceWorker.getRegistration().then((registration) => {
-                    if (registration && registration.waiting) {
-                        console.log('Application de la mise à jour...');
-                        registration.waiting.postMessage({action: 'skipWaiting'});
-                    }
-                });
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.getRegistration().then(registration => {
+                if (registration) {
+                    // Vérification si une nouvelle version du service worker est disponible
+                    registration.onupdatefound = () => {
+                        const installingWorker = registration.installing;
+                        installingWorker.onstatechange = () => {
+                            if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // Afficher le bouton de mise à jour
+                                showUpdateButton();
+                            }
+                        };
+                    };
+                }
             });
+        });
+    }
 
-            // Nettoyer l'indicateur après la mise à jour
-            localStorage.removeItem('updateAvailable');
-        }
-    });
+    // Affiche le bouton pour forcer la mise à jour
+    function showUpdateButton() {
+        const updateButton = document.getElementById('updateButton');
+        updateButton.style.display = 'block'; // Afficher le bouton de mise à jour
+        updateButton.addEventListener('click', () => {
+            // Mettre à jour le service worker
+            updateServiceWorker();
+        });
+    }
+
+    // Fonction pour forcer la mise à jour du service worker
+    function updateServiceWorker() {
+        navigator.serviceWorker.getRegistration().then(registration => {
+            if (registration) {
+                registration.update();  // Force la mise à jour du service worker
+                alert("Mise à jour de l'application effectuée !");
+            }
+        });
+    }
+
 </script>
 
 <header>

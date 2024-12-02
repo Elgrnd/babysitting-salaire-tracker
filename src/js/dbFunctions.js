@@ -127,7 +127,7 @@ function afficherBabySittings() {
 
     titre.innerHTML = "Historique des babysittings"
     if (result.length !== 0) {
-        table.innerHTML = "<tr><th>Dateeeee</th><th>Volume Horaire</th><th>Salaire/h</th><th>Salaire</th></tr>";
+        table.innerHTML = "<tr><th>Date</th><th>Volume Horaire</th><th>Salaire/h</th><th>Salaire</th></tr>";
     }
 
     if (result.length > 0) {

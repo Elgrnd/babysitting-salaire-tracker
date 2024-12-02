@@ -13,42 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-        navigator.serviceWorker.register('../../utils/service-worker.js')
-            .then(registration => {
-                console.log('Service Worker enregistré avec succès: ', registration);
 
-                // Vérification si une nouvelle version du service worker est disponible
-                registration.onupdatefound = () => {
-                    const installingWorker = registration.installing;
-                    installingWorker.onstatechange = () => {
-                        if (installingWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                            // Nouvelle version disponible, afficher un message ou bouton de mise à jour
-                            showUpdateButton();
-                        }
-                    };
-                };
-            })
-            .catch(error => {
-                console.log('Échec de l\'enregistrement du Service Worker:', error);
-            });
-    });
-}
-
-function showUpdateButton() {
-    const updateButton = document.getElementById('updateButton');
-    updateButton.style.display = 'block'; // Afficher le bouton de mise à jour
-    updateButton.addEventListener('click', () => {
-        // Mettre à jour le service worker manuellement
-        updateServiceWorker();
-    });
-}
-
-function updateServiceWorker() {
-    navigator.serviceWorker.getRegistration().then(registration => {
-        registration.update();  // Met à jour le service worker manuellement
-    });
-}
 
 

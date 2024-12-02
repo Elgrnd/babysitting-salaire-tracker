@@ -14,13 +14,21 @@ async function initDb() {
             nom TEXT PRIMARY KEY, 
             prenom TEXT
         )`);
+        db.run(`CREATE TABLE IF NOT EXISTS babysittings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            date TEXT, 
+            volume_horaire INTEGER,
+            salaire_heure INTEGER, 
+            salaire REAL
+        )`);
         console.log("Base de données restaurée depuis localStorage");
     } else {
         db = new SQL.Database(); // Nouvelle base
         db.run(`CREATE TABLE IF NOT EXISTS babysittings (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             date TEXT, 
-            volume_horaire INTEGER, 
+            volume_horaire INTEGER,
+            salaire_heure INTEGER, 
             salaire REAL
         )`);
         db.run(`CREATE TABLE IF NOT EXISTS utilisateur (
@@ -95,13 +103,14 @@ function ajouterBabySitting() {
     const date = document.getElementById('date').value;
     const volumeHoraire = parseInt(document.getElementById('volumeHoraire').value);
     const salaire = parseFloat(document.getElementById('salaire').value);
+    const salaire_heure = parseFloat(document.getElementById('salaire_heure').value);
 
     if (!date || isNaN(volumeHoraire) || isNaN(salaire)) {
         alert("Veuillez remplir tous les champs !");
         return;
     }
 
-    db.run("INSERT INTO babysittings (date, volume_horaire, salaire) VALUES (?, ?, ?)", [date, volumeHoraire, salaire]);
+    db.run("INSERT INTO babysittings (date, volume_horaire, salaire_heure, salaire) VALUES (?, ?, ?, ?)", [date, volumeHoraire, salaire_heure, salaire]);
 
     sauvegarderDb(); // Sauvegarder la base après chaque modification
 }
@@ -118,7 +127,7 @@ function afficherBabySittings() {
 
     titre.innerHTML = "Historique des babysittings"
     if (result.length !== 0) {
-        table.innerHTML = "<tr><th>Date</th><th>Volume Horaire</th><th>Salaire</th></tr>";
+        table.innerHTML = "<tr><th>Date</th><th>Volume Horaire</th><th>Salaire h</th><th>Salaire</th></tr>";
     }
 
     if (result.length > 0) {

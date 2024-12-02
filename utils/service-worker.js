@@ -63,6 +63,7 @@ self.addEventListener("fetch", (event) => {
 self.addEventListener('message', (event) => {
     if (event.data && event.data.action === 'skipWaiting') {
         self.skipWaiting();  // Forcer l'activation immédiate
-        console.log("activé");
+        console.log("Service Worker activé manuellement");
     }
 });
+

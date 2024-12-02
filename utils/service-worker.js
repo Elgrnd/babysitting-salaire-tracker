@@ -1,4 +1,4 @@
-const CACHE_NAME = "pwa-cache-v0.2";
+const CACHE_NAME = "pwa-cache-v1";
 const urlsToCache = [
     "/",
     "/ressources/css/styles.css",
@@ -6,7 +6,6 @@ const urlsToCache = [
     "/ressources/img/logo.jpg",
 ];
 
-// Installation du service worker
 // Installation du service worker
 self.addEventListener('install', (event) => {
     event.waitUntil(
@@ -35,17 +34,10 @@ self.addEventListener('activate', (event) => {
                 })
             );
         }).then(() => {
+            // Pas de skipWaiting automatique, il faut l'activer manuellement
             console.log("Service Worker prêt à être mis à jour");
         })
     );
-});
-
-// Ne pas appeler skipWaiting automatiquement
-self.addEventListener('message', (event) => {
-    if (event.data && event.data.action === 'skipWaiting') {
-        self.skipWaiting();  // L'activation manuelle est ici
-        console.log('activé')
-    }
 });
 
 // Interception des requêtes pour gérer le cache
@@ -64,3 +56,9 @@ self.addEventListener("fetch", (event) => {
     );
 });
 
+// Attente d'un message pour forcer l'activation
+self.addEventListener('message', (event) => {
+    if (event.data && event.data.action === 'skipWaiting') {
+        self.skipWaiting();  // Activation manuelle
+    }
+});

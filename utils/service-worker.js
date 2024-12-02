@@ -40,6 +40,13 @@ self.addEventListener('activate', (event) => {
     );
 });
 
+self.addEventListener('message', (event) => {
+    if (event.data && event.data.action === 'skipWaiting') {
+        self.skipWaiting();  // Activation manuelle
+    }
+});
+
+
 // Interception des requêtes pour gérer le cache
 self.addEventListener("fetch", (event) => {
     event.respondWith(
@@ -56,9 +63,3 @@ self.addEventListener("fetch", (event) => {
     );
 });
 
-// Attente d'un message pour forcer l'activation
-self.addEventListener('message', (event) => {
-    if (event.data && event.data.action === 'skipWaiting') {
-        self.skipWaiting();  // Activation manuelle
-    }
-});

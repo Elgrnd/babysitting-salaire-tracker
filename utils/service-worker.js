@@ -1,4 +1,4 @@
-const CACHE_NAME = "pwa-cache-v666";
+const CACHE_NAME = "pwa-cache-v1"; // Changez ce numéro à chaque nouvelle version.
 const urlsToCache = [
     "/",
     "/ressources/css/styles.css",
@@ -6,18 +6,19 @@ const urlsToCache = [
     "/ressources/img/logo.jpg",
 ];
 
+// Installation du service worker
 self.addEventListener("install", (event) => {
     console.log("Service Worker: Installation...");
     event.waitUntil(
-        caches.open(CACHE_NAME)
-            .then((cache) => {
-                console.log("Service Worker: Cache ouvert.");
-                return cache.addAll(urlsToCache);
-            })
-            .catch((error) => console.error("Erreur lors de l'ajout au cache :", error))
+        caches.open(CACHE_NAME).then((cache) => {
+            console.log("Service Worker: Cache ouvert.");
+            return cache.addAll(urlsToCache);
+        })
     );
+    self.skipWaiting(); // Forcer l'activation immédiate
 });
 
+// Activation du service worker
 self.addEventListener("activate", (event) => {
     console.log("Service Worker: Activation...");
     event.waitUntil(
@@ -32,8 +33,10 @@ self.addEventListener("activate", (event) => {
             );
         })
     );
+    self.clients.claim(); // Forcer le contrôle immédiat de toutes les pages ouvertes
 });
 
+// Interception des requêtes pour gérer le cache
 self.addEventListener("fetch", (event) => {
     event.respondWith(
         caches.match(event.request).then((response) => {
@@ -45,26 +48,4 @@ self.addEventListener("fetch", (event) => {
             });
         })
     );
-});
-
-// Notifier la page d'une mise à jour disponible
-self.addEventListener("message", (event) => {
-    if (event.data && event.data.action === "skipWaiting") {
-        console.log("Service Worker: Activation forcée...");
-        self.skipWaiting();
-    }
-});
-
-self.addEventListener("updatefound", () => {
-    const newWorker = self.installing;
-    newWorker.onstatechange = () => {
-        if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-            console.log("Nouveau Service Worker prêt à être utilisé.");
-            self.clients.matchAll({ includeUncontrolled: true }).then((clients) => {
-                clients.forEach((client) => {
-                    client.postMessage({ action: "newVersionAvailable" });
-                });
-            });
-        }
-    };
 });

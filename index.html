@@ -27,7 +27,6 @@
 
     <h2 id="historique"></h2>
     <table id="babysittingTable"></table>
-    <p>aaaaaaaaaaa</p>
 </main>
 <footer>
     <button id="updateButton" style="display: none;">Mettre à jour l'application</button>
@@ -35,64 +34,23 @@
     <script>
         if ("serviceWorker" in navigator) {
             navigator.serviceWorker.register("/utils/service-worker.js").then((registration) => {
-                console.log("Service Worker enregistré:", registration);
+                console.log("Service Worker enregistré avec succès.");
 
-                // Vérifier si un service worker est en attente
-                if (registration.waiting) {
-                    afficherNotificationDeMiseAJour(registration);
-                }
-
-                // Écouter les mises à jour du service worker
+                // Détecter les mises à jour
                 registration.onupdatefound = () => {
                     const newWorker = registration.installing;
-                    if (newWorker) {
-                        console.log("Un nouveau Service Worker est détecté.");
-                        newWorker.onstatechange = () => {
-                            if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-                                afficherNotificationDeMiseAJour(registration);
-                            }
-                        };
-                    }
-                };
-            });
-
-            navigator.serviceWorker.addEventListener("message", (event) => {
-                if (event.data && event.data.action === "newVersionAvailable") {
-                    console.log("Une nouvelle version de l'application est disponible.");
-                    afficherNotificationDeMiseAJour();
-                }
-            });
-        }
-
-        function afficherNotificationDeMiseAJour(registration) {
-            const notification = document.createElement("div");
-            notification.style.position = "fixed";
-            notification.style.bottom = "0";
-            notification.style.left = "0";
-            notification.style.width = "100%";
-            notification.style.backgroundColor = "#ffcc00";
-            notification.style.color = "#000";
-            notification.style.textAlign = "center";
-            notification.style.padding = "10px";
-            notification.style.zIndex = "1000";
-            notification.innerHTML = `
-        <p>Une mise à jour est disponible. <button id="reloadApp">Mettre à jour</button></p>
-    `;
-            document.body.appendChild(notification);
-
-            const reloadButton = document.getElementById("reloadApp");
-            reloadButton.addEventListener("click", () => {
-                if (registration.waiting) {
-                    registration.waiting.postMessage({ action: "skipWaiting" });
-                    registration.waiting.addEventListener("statechange", (event) => {
-                        if (event.target.state === "activated") {
-                            console.log("Nouvelle version activée.");
-                            window.location.reload();
+                    newWorker.onstatechange = () => {
+                        if (newWorker.state === "activated" && navigator.serviceWorker.controller) {
+                            console.log("Nouvelle version disponible, rechargement en cours...");
+                            window.location.reload(); // Recharger automatiquement la page
                         }
-                    });
-                }
+                    };
+                };
+            }).catch((error) => {
+                console.error("Échec de l'enregistrement du Service Worker:", error);
             });
         }
+
 
     </script>
 

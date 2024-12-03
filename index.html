@@ -30,8 +30,54 @@
     <p>help me</p>
 </main>
 <footer>
-    <button id="updateButton" style="display:none;">Mettre à jour l'application</button>
+    <button id="updateButton" style="display: none;">Mettre à jour l'application</button>
 
+    <script>
+        if ("serviceWorker" in navigator) {
+            navigator.serviceWorker.register("utils/service-worker.js").then((registration) => {
+                console.log("Service Worker enregistré avec succès:", registration);
+
+                // Vérifier si un nouveau service worker est en attente
+                if (registration.waiting) {
+                    afficherBoutonDeMiseAJour(registration);
+                }
+
+                // Détecter les mises à jour
+                registration.onupdatefound = () => {
+                    const newWorker = registration.installing;
+                    console.log("Un nouveau Service Worker est en cours d'installation.");
+
+                    newWorker.onstatechange = () => {
+                        if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+                            console.log("Un nouveau Service Worker est disponible.");
+                            afficherBoutonDeMiseAJour(registration);
+                        }
+                    };
+                };
+            }).catch((error) => {
+                console.error("Échec de l'enregistrement du Service Worker:", error);
+            });
+        }
+
+        // Affiche un bouton pour mettre à jour l'application
+        function afficherBoutonDeMiseAJour(registration) {
+            const updateButton = document.getElementById("updateButton");
+            updateButton.style.display = "block";
+
+            updateButton.addEventListener("click", () => {
+                if (registration.waiting) {
+                    registration.waiting.postMessage({ action: "skipWaiting" });
+
+                    registration.waiting.addEventListener("statechange", (event) => {
+                        if (event.target.state === "activated") {
+                            console.log("Le nouveau Service Worker est activé.");
+                            window.location.reload(); // Recharger la page avec le nouveau service worker
+                        }
+                    });
+                }
+            });
+        }
+    </script>
 
     <div class="navigation">
         <ul>
@@ -59,53 +105,6 @@
     </div>
 
 </footer>
-<script>
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("utils/service-worker.js").then((registration) => {
-            console.log("Service Worker enregistré avec succès:", registration);
-
-            // Vérifier si un nouveau service worker est en attente
-            if (registration.waiting) {
-                afficherBoutonDeMiseAJour(registration);
-            }
-
-            // Détecter les mises à jour
-            registration.onupdatefound = () => {
-                const newWorker = registration.installing;
-                console.log("Un nouveau Service Worker est en cours d'installation.");
-
-                newWorker.onstatechange = () => {
-                    if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-                        console.log("Un nouveau Service Worker est disponible.");
-                        afficherBoutonDeMiseAJour(registration);
-                    }
-                };
-            };
-        }).catch((error) => {
-            console.error("Échec de l'enregistrement du Service Worker:", error);
-        });
-    }
-
-    // Affiche un bouton pour mettre à jour l'application
-    function afficherBoutonDeMiseAJour(registration) {
-        const updateButton = document.getElementById("updateButton");
-        updateButton.style.display = "block";
-
-        updateButton.addEventListener("click", () => {
-            if (registration.waiting) {
-                registration.waiting.postMessage({ action: "skipWaiting" });
-
-                registration.waiting.addEventListener("statechange", (event) => {
-                    if (event.target.state === "activated") {
-                        console.log("Le nouveau Service Worker est activé.");
-                        window.location.reload(); // Recharger la page avec le nouveau service worker
-                    }
-                });
-            }
-        });
-    }
-
-</script>
 
 </body>
 </html>

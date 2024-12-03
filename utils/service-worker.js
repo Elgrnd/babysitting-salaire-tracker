@@ -1,4 +1,4 @@
-const CACHE_NAME = "pwa-cache-v1"; // Changez ce numéro à chaque nouvelle version.
+const CACHE_NAME = "pwa-cache-v2"; // Changez ce numéro à chaque nouvelle version.
 const urlsToCache = [
     "/",
     "/ressources/css/styles.css",

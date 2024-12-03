@@ -133,6 +133,8 @@ function afficherBabySittings() {
     if (result.length > 0) {
         result[0].values.forEach(row => {
             const tr = document.createElement("tr");
+            const rowId = row[0];
+            tr.setAttribute("id", `row-${rowId}`);
             // Ignorer la première colonne (index 0)
             row.slice(1).forEach(value => {
                 const td = document.createElement("td");
@@ -143,6 +145,13 @@ function afficherBabySittings() {
         });
     }
     
+}
+
+function supprimerBabySitting() {
+    if (!db) {
+        console.error("La base de données n'est pas encore initialisée.");
+        return;
+    }
 }
 
 window.addEventListener("beforeunload", sauvegarderDb); // Sauvegarder avant de quitter la page

@@ -39,20 +39,22 @@
 
                 // Vérifier si un nouveau service worker est en attente
                 if (registration.waiting) {
+                    console.log("Nouveau service worker en attente.");
                     afficherBoutonDeMiseAJour(registration);
                 }
 
                 // Détecter les mises à jour
                 registration.onupdatefound = () => {
                     const newWorker = registration.installing;
-                    console.log("Un nouveau Service Worker est en cours d'installation.");
-
-                    newWorker.onstatechange = () => {
-                        if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-                            console.log("Un nouveau Service Worker est disponible.");
-                            afficherBoutonDeMiseAJour(registration);
-                        }
-                    };
+                    if (newWorker) {
+                        console.log("Un nouveau service worker est en cours d'installation.");
+                        newWorker.onstatechange = () => {
+                            console.log("État du service worker:", newWorker.state);
+                            if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+                                afficherBoutonDeMiseAJour(registration); // Appelle la fonction pour afficher le bouton
+                            }
+                        };
+                    }
                 };
             }).catch((error) => {
                 console.error("Échec de l'enregistrement du Service Worker:", error);

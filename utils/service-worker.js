@@ -1,4 +1,4 @@
-const CACHE_NAME = "pwa-cache-v1111";
+const CACHE_NAME = "pwa-cache-v1";
 const urlsToCache = [
     "/",
     "/ressources/css/styles.css",
@@ -7,11 +7,11 @@ const urlsToCache = [
 ];
 
 // Installation du service worker
-self.addEventListener('install', (event) => {
+self.addEventListener("install", (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log("Service Worker: cache ouvert");
+                console.log("Service Worker: Cache ouvert");
                 return cache.addAll(urlsToCache);
             })
             .catch((error) => {
@@ -21,24 +21,20 @@ self.addEventListener('install', (event) => {
 });
 
 // Activation du service worker
-self.addEventListener('activate', (event) => {
+self.addEventListener("activate", (event) => {
     const cacheWhitelist = [CACHE_NAME];
-
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cache) => {
                     if (!cacheWhitelist.includes(cache)) {
-                        console.log("j'ai delete le cache")
-                        // Supprimer les anciens caches
+                        console.log("Ancien cache supprimé:", cache);
                         return caches.delete(cache);
-
                     }
                 })
             );
         }).then(() => {
-            // Ne pas activer immédiatement mais attendre l'action manuelle
-            console.log("Service Worker activé, prêt à être mis à jour");
+            console.log("Service Worker activé et prêt.");
         })
     );
 });
@@ -47,10 +43,9 @@ self.addEventListener('activate', (event) => {
 self.addEventListener("fetch", (event) => {
     event.respondWith(
         caches.match(event.request)
-            .then(response => {
+            .then((response) => {
                 return response || fetch(event.request).then((fetchResponse) => {
                     return caches.open(CACHE_NAME).then((cache) => {
-                        // Mettre en cache la réponse de la requête (si nécessaire)
                         cache.put(event.request, fetchResponse.clone());
                         return fetchResponse;
                     });
@@ -59,11 +54,10 @@ self.addEventListener("fetch", (event) => {
     );
 });
 
-// Écouter les messages pour forcer la mise à jour du service worker
-self.addEventListener('message', (event) => {
-    if (event.data && event.data.action === 'skipWaiting') {
-        self.skipWaiting();  // Forcer l'activation immédiate
-        console.log("Service Worker activé manuellement");
+// Écouter les messages pour activer la mise à jour manuelle
+self.addEventListener("message", (event) => {
+    if (event.data && event.data.action === "skipWaiting") {
+        self.skipWaiting(); // Forcer l'activation du service worker
+        console.log("Service Worker activé manuellement.");
     }
 });
-

@@ -33,51 +33,66 @@
 
     <script>
         if ("serviceWorker" in navigator) {
-            navigator.serviceWorker.register("utils/service-worker.js").then((registration) => {
-                console.log("Service Worker enregistré avec succès:", registration);
+            navigator.serviceWorker.register("/utils/service-worker.js").then((registration) => {
+                console.log("Service Worker enregistré:", registration);
 
-                // Vérifier si un nouveau service worker est en attente
+                // Vérifier si un service worker est en attente
                 if (registration.waiting) {
-                    console.log("Nouveau service worker en attente.");
-                    afficherBoutonDeMiseAJour(registration);
+                    afficherNotificationDeMiseAJour(registration);
                 }
 
-                // Détecter les mises à jour
+                // Écouter les mises à jour du service worker
                 registration.onupdatefound = () => {
                     const newWorker = registration.installing;
                     if (newWorker) {
-                        console.log("Un nouveau service worker est en cours d'installation.");
+                        console.log("Un nouveau Service Worker est détecté.");
                         newWorker.onstatechange = () => {
-                            console.log("État du service worker:", newWorker.state);
                             if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-                                afficherBoutonDeMiseAJour(registration); // Appelle la fonction pour afficher le bouton
+                                afficherNotificationDeMiseAJour(registration);
                             }
                         };
                     }
                 };
-            }).catch((error) => {
-                console.error("Échec de l'enregistrement du Service Worker:", error);
+            });
+
+            navigator.serviceWorker.addEventListener("message", (event) => {
+                if (event.data && event.data.action === "newVersionAvailable") {
+                    console.log("Une nouvelle version de l'application est disponible.");
+                    afficherNotificationDeMiseAJour();
+                }
             });
         }
 
-        // Affiche un bouton pour mettre à jour l'application
-        function afficherBoutonDeMiseAJour(registration) {
-            const updateButton = document.getElementById("updateButton");
-            updateButton.style.display = "block";
+        function afficherNotificationDeMiseAJour(registration) {
+            const notification = document.createElement("div");
+            notification.style.position = "fixed";
+            notification.style.bottom = "0";
+            notification.style.left = "0";
+            notification.style.width = "100%";
+            notification.style.backgroundColor = "#ffcc00";
+            notification.style.color = "#000";
+            notification.style.textAlign = "center";
+            notification.style.padding = "10px";
+            notification.style.zIndex = "1000";
+            notification.innerHTML = `
+        <p>Une mise à jour est disponible. <button id="reloadApp">Mettre à jour</button></p>
+    `;
+            document.body.appendChild(notification);
 
-            updateButton.addEventListener("click", () => {
+            const reloadButton = document.getElementById("reloadApp");
+            reloadButton.addEventListener("click", () => {
                 if (registration.waiting) {
                     registration.waiting.postMessage({ action: "skipWaiting" });
-
                     registration.waiting.addEventListener("statechange", (event) => {
                         if (event.target.state === "activated") {
-                            console.log("Le nouveau Service Worker est activé.");
-                            window.location.reload(); // Recharger la page avec le nouveau service worker
+                            console.log("Nouvelle version activée.");
+                            window.location.reload();
                         }
                     });
                 }
             });
         }
+
     </script>
 
     <div class="navigation">

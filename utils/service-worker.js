@@ -1,4 +1,4 @@
-const CACHE_NAME = "pwa-cache-v666777";
+const CACHE_NAME = "pwa-cache-v5";
 const urlsToCache = [
     "/",
     "/ressources/css/styles.css",
@@ -6,58 +6,65 @@ const urlsToCache = [
     "/ressources/img/logo.jpg",
 ];
 
-// Installation du service worker
 self.addEventListener("install", (event) => {
+    console.log("Service Worker: Installation...");
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then((cache) => {
-                console.log("Service Worker: Cache ouvert");
+                console.log("Service Worker: Cache ouvert.");
                 return cache.addAll(urlsToCache);
             })
-            .catch((error) => {
-                console.error("Erreur lors de l'ajout au cache :", error);
-            })
+            .catch((error) => console.error("Erreur lors de l'ajout au cache :", error))
     );
 });
 
-// Activation du service worker
 self.addEventListener("activate", (event) => {
-    const cacheWhitelist = [CACHE_NAME];
+    console.log("Service Worker: Activation...");
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
                 cacheNames.map((cache) => {
-                    if (!cacheWhitelist.includes(cache)) {
-                        console.log("Ancien cache supprimé:", cache);
+                    if (cache !== CACHE_NAME) {
+                        console.log("Service Worker: Suppression de l'ancien cache:", cache);
                         return caches.delete(cache);
                     }
                 })
             );
-        }).then(() => {
-            console.log("Service Worker activé et prêt.");
         })
     );
 });
 
-// Interception des requêtes pour gérer le cache
 self.addEventListener("fetch", (event) => {
     event.respondWith(
-        caches.match(event.request)
-            .then((response) => {
-                return response || fetch(event.request).then((fetchResponse) => {
-                    return caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, fetchResponse.clone());
-                        return fetchResponse;
-                    });
+        caches.match(event.request).then((response) => {
+            return response || fetch(event.request).then((fetchResponse) => {
+                return caches.open(CACHE_NAME).then((cache) => {
+                    cache.put(event.request, fetchResponse.clone());
+                    return fetchResponse;
                 });
-            })
+            });
+        })
     );
 });
 
-// Écouter les messages pour activer la mise à jour manuelle
+// Notifier la page d'une mise à jour disponible
 self.addEventListener("message", (event) => {
     if (event.data && event.data.action === "skipWaiting") {
-        self.skipWaiting(); // Forcer l'activation du service worker
-        console.log("Service Worker activé manuellement.");
+        console.log("Service Worker: Activation forcée...");
+        self.skipWaiting();
     }
+});
+
+self.addEventListener("updatefound", () => {
+    const newWorker = self.installing;
+    newWorker.onstatechange = () => {
+        if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
+            console.log("Nouveau Service Worker prêt à être utilisé.");
+            self.clients.matchAll({ includeUncontrolled: true }).then((clients) => {
+                clients.forEach((client) => {
+                    client.postMessage({ action: "newVersionAvailable" });
+                });
+            });
+        }
+    };
 });

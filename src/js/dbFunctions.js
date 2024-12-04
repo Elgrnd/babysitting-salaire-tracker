@@ -125,8 +125,8 @@ function afficherBabySittings() {
     const titre = document.getElementById("historique");
     const table = document.getElementById("babysittingTable");
 
-    titre.innerHTML = "Historique des babysittings"
     if (result.length !== 0) {
+        titre.innerHTML = "Historique des babysittings"
         table.innerHTML = "<tr><th>Date</th><th>Volume Horaire</th><th>Salaire/h</th><th>Salaire</th></tr>";
     }
 
@@ -175,6 +175,7 @@ function supprimerBabySitting() {
     });
 
     afficherBabySittings();
+    location.reload();
 }
 
 window.addEventListener("beforeunload", sauvegarderDb); // Sauvegarder avant de quitter la page

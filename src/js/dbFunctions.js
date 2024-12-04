@@ -175,7 +175,7 @@ function supprimerBabySitting() {
             console.error(`Erreur lors de la suppression de l'ID ${selectedRowId}:`, error);
         }
     });
-
+    sauvegarderDb(); // Sauvegarder la base après chaque modification
     afficherBabySittings();
 }
 

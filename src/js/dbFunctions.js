@@ -131,6 +131,7 @@ function afficherBabySittings() {
     }
 
     if (result.length > 0) {
+        const rows = document.querySelectorAll("table tbody tr");
         result[0].values.forEach(row => {
             const tr = document.createElement("tr");
             const rowId = row[0];
@@ -141,6 +142,12 @@ function afficherBabySittings() {
                 td.textContent = value;
                 tr.appendChild(td);
             });
+            tr.addEventListener("click", () => {
+                rows.forEach(r => r.removeAttribute("selected"));
+                tr.setAttribute("selected", "");
+                const deleteButton = document.getElementById("delete");
+                deleteButton.style.display = "block"
+            })
             table.appendChild(tr);
         });
     }
@@ -152,6 +159,22 @@ function supprimerBabySitting() {
         console.error("La base de données n'est pas encore initialisée.");
         return;
     }
+    const selectedRows = document.querySelectorAll("tr[selected]");
+    selectedRows.forEach(selectedRow => {
+        // Extraire l'id de la ligne sélectionnée
+        const selectedRowFullId = selectedRow.id; // Ex: "row-123"
+        const selectedRowId = selectedRowFullId.split("-")[1]; // Extrait "123"
+
+        // Supprimer l'entrée de la base de données
+        try {
+            db.exec("DELETE FROM babysittings WHERE id = ?", [selectedRowId]);
+            console.log(`Baby-sitting avec ID ${selectedRowId} supprimé.`);
+        } catch (error) {
+            console.error(`Erreur lors de la suppression de l'ID ${selectedRowId}:`, error);
+        }
+    });
+
+    afficherBabySittings();
 }
 
 window.addEventListener("beforeunload", sauvegarderDb); // Sauvegarder avant de quitter la page

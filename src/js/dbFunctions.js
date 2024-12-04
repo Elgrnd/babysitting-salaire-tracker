@@ -125,18 +125,20 @@ function afficherBabySittings() {
     const titre = document.getElementById("historique");
     const table = document.getElementById("babysittingTable");
 
-    if (result.length !== 0) {
-        titre.innerHTML = "Historique des babysittings"
-        table.innerHTML = "<tr><th>Date</th><th>Volume Horaire</th><th>Salaire/h</th><th>Salaire</th></tr>";
-    }
-
-    if (result.length > 0) {
+    // Vérifiez si le résultat est vide
+    if (result.length === 0 || result[0].values.length === 0) {
+        titre.innerHTML = "Aucun babysitting trouvé";
+        table.innerHTML = "<tr><td colspan='4'>Aucune donnée disponible.</td></tr>";  // Affichez un message si aucune donnée n'est trouvée
+    } else {
         const rows = document.querySelectorAll("table tbody tr");
+        titre.innerHTML = "Historique des babysittings";
+        table.innerHTML = "<tr><th>Date</th><th>Volume Horaire</th><th>Salaire/h</th><th>Salaire</th></tr>";
         result[0].values.forEach(row => {
             const tr = document.createElement("tr");
             const rowId = row[0];
             tr.setAttribute("id", `row-${rowId}`);
-            // Ignorer la première colonne (index 0)
+
+            // Ajoutez les cellules de la ligne
             row.slice(1).forEach(value => {
                 const td = document.createElement("td");
                 td.textContent = value;
@@ -151,8 +153,8 @@ function afficherBabySittings() {
             table.appendChild(tr);
         });
     }
-    
 }
+
 
 function supprimerBabySitting() {
     if (!db) {

@@ -167,7 +167,7 @@ function supprimerBabySitting() {
 
         // Supprimer l'entrée de la base de données
         try {
-            db.exec("DELETE FROM babysittings WHERE id = ?", [selectedRowId]);
+            db.exec(`DELETE FROM babysittings WHERE id = ${selectedRowId}`);
             console.log(`Baby-sitting avec ID ${selectedRowId} supprimé.`);
         } catch (error) {
             console.error(`Erreur lors de la suppression de l'ID ${selectedRowId}:`, error);
@@ -175,7 +175,6 @@ function supprimerBabySitting() {
     });
 
     afficherBabySittings();
-    location.reload();
 }
 
 window.addEventListener("beforeunload", sauvegarderDb); // Sauvegarder avant de quitter la page

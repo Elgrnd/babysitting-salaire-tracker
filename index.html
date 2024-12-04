@@ -79,10 +79,6 @@
         }).catch((error) => {
             console.error("Échec de l'enregistrement du Service Worker:", error);
         });
-        navigator.serviceWorker.ready.then(registration => {
-        // Forcer la mise à jour du cache lorsque le service worker est prêt
-        registration.update();
-    });
     }
 
 

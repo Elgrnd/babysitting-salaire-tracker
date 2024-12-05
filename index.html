@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>My Babysittings</title>
+    <link rel="manifest" href="utils/manifest.json">
     <link rel="stylesheet" href="ressources/css/styles.css">
     <link
             rel="stylesheet"
@@ -26,6 +27,13 @@ margin: 15px"
 <p>Pour cela, cliques sur  <img id="share" src="ressources/img/share.png" alt="share"> puis sur</p>
 <p><span class="ecart">Sur l'écran d'accueil</span>.</p>
 <p>Voilà, vous pouvez désormais lancer MyBabySittings depuis l'écran d'accueil.</p>
+
+<script>
+    if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone) {
+        // L'application est déjà installée, redirigez directement
+        window.location.href = "home.html";
+    }
+</script>
 
 </body>
 </html>

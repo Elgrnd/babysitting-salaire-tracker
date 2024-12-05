@@ -1,7 +1,7 @@
 {
   "name": "My BabySittings",
   "short_name": "MyBabySittings",
-  "start_url": "/home.html",
+  "start_url": "/index.html",
   "display": "standalone",
   "background_color": "#1A1B1E",
   "theme_color": "#1A1B1E",

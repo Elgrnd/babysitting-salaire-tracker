@@ -4,6 +4,8 @@ const urlsToCache = [
     "/ressources/css/styles.css",
     "/src/js/dbFunctions.js",
     "/ressources/img/logo.jpg",
+    "/ressources/img/share.jpg",
+    "/ressources/img/logoBabysitting.jpg"
 ];
 
 // Installation du service worker

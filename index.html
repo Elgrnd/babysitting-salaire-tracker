@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Gestion Babysitting</title>
+    <title>My Babysittings</title>
     <link rel="stylesheet" href="ressources/css/styles.css">
-    <link rel="manifest" href="utils/manifest.json">
     <link
             rel="stylesheet"
             href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
@@ -13,75 +12,20 @@
             crossorigin="anonymous"
     />
 </head>
-<body>
-<header>
+<body style="text-align: center;
+            display: flex;
+            flex-direction: column;
+justify-content: center;
+align-items: center;
+margin: 15px"
+>
 
-</header>
-<main>
-
-    <div id="userContainer"></div>
-
-    <h2 id="historique"></h2>
-    <div class="table-container">
-        <table id="babysittingTable"></table>
-    </div>
-</main>
-<footer>
-
-    <button type="submit" style="display: none;" id="delete" onclick="supprimerBabySitting()">Supprimer un babysitting</button>
-
-    <div class="navigation">
-        <ul>
-            <li class="list" data-color="#dc143c">
-                <a href="index.html">
-                    <span class="icon"><i class="far fa-home" style="color: #1562A2"></i></span>
-                </a>
-            </li>
-            <li class="list" data-color="#05c46b">
-                <a href="new.html">
-                    <span class="icon"><i class="far fa-plus"></i></span>
-                </a>
-            </li>
-            <li class="list" data-color="#0fbcf9">
-                <a href="stats.html">
-                    <span class="icon"><i class="far fa-chart-line"></i></span>
-                </a>
-            </li>
-            <li class="list" data-color="#0fbcf9">
-                <a href="utile.html">
-                    <span class="icon"><i class="far fa-question-circle"></i></span>
-                </a>
-            </li>
-        </ul>
-    </div>
-
-</footer>
-
-<script>
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/utils/service-worker.js").then((registration) => {
-            console.log("Service Worker enregistré avec succès.");
-
-            // Détecter les mises à jour
-            registration.onupdatefound = () => {
-                const newWorker = registration.installing;
-                newWorker.onstatechange = () => {
-                    if (newWorker.state === "activated" && navigator.serviceWorker.controller) {
-                        console.log("Nouvelle version disponible, rechargement en cours...");
-                        window.location.reload(); // Recharger automatiquement la page
-                    }
-                };
-            };
-        }).catch((error) => {
-            console.error("Échec de l'enregistrement du Service Worker:", error);
-        });
-    }
-
-
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/sql-wasm.js"></script>
-<script src="src/js/dbFunctions.js"></script>
-<script src="src/js/scripts.js"></script>
+<img id="logoBabysitting" src="ressources/img/logoBabysitting.png" alt="Logo">
+<h2>Bienvenue sur MyBabySittings</h2>
+<p>Avant de commencer, il faut que tu installes <span class="highlight">MyBabySittings</span> sur ton écran d'accueil.</p>
+<p>Pour cela, cliques sur  <img id="share" src="ressources/img/share.png" alt="share"> puis sur</p>
+<p><span class="ecart">Sur l'écran d'accueil</span>.</p>
+<p>Voilà, vous pouvez désormais lancer MyBabySittings depuis l'écran d'accueil.</p>
 
 </body>
 </html>

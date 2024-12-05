@@ -33,7 +33,7 @@ async function initDb() {
 
     createTables(); // Créer les tables (utilisateur et babysittings)
 
-    // Vérifie si tu es sur la page stats.html ou index.html
+    // Vérifie si tu es sur la page stats.html ou home.html
     const pathname = window.location.pathname;
 
     if (pathname.endsWith("stats.html")) {
@@ -41,7 +41,7 @@ async function initDb() {
         sommeMoyenneHeure();
         sommeTotaleHeure();
         calculerPrimes();
-    } else if (pathname.endsWith("index.html")) {
+    } else if (pathname.endsWith("home.html")) {
         checkUtilisateur();
     }
 }

@@ -251,11 +251,18 @@ tr[selected] {
     margin: 15px 0;
 }
 
-/* Texte d'alerte si aucune donnée */
-.stats-container .alert {
-    color: #FF6F61;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-    margin: 20px 0;
+#logoBabysitting {
+    width: 30%;
+}
+
+#share {
+    width: 13px;
+    margin: 0 2px 0 2px;
+}
+
+.ecart {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    background-color: rgb(44, 46, 51);
+    border-radius: 6px;
+    padding: 3px;
 }

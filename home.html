@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Ajouter babysitting</title>
+    <title>Gestion Babysitting</title>
     <link rel="stylesheet" href="ressources/css/styles.css">
     <link rel="manifest" href="utils/manifest.json">
     <link
@@ -13,37 +13,28 @@
             crossorigin="anonymous"
     />
 </head>
-<body style="display: flex;
-justify-content: center; /* Centre horizontalement */
-align-items: center;">
-
+<body>
 <header>
 
 </header>
 <main>
-  <div class="container">
-    <p>
-        Bonjour, je m'appelle <span class="highlight">Galdric</span> et j'ai créé une application pour vous aider à suivre 
-        facilement l'argent gagné grâce à vos babysittings.
-    </p>
-    <p>
-        Si vous avez des idées d'amélioration ou si vous trouvez un bug, n'hésitez pas à me contacter par mail à 
-        <a href="mailto:galddc@gmail.com" class="email">galddc@gmail.com</a>. 
-    </p>
-    <p>Votre retour m'aidera à rendre l'application encore meilleure. Merci !</p>
-    <div class="links">
-      <a href="https://github.com/Elgrnd/babysitting-salaire-tracker" class="link github" target="_blank">Voir le projet sur GitHub</a>
-      <a href="https://buymeacoffee.com/elgrnd" class="link coffee" target="_blank">Buy Me a Coffee</a>
-  </div>
-</div>
-</div>
+
+    <div id="userContainer"></div>
+
+    <h2 id="historique"></h2>
+    <div class="table-container">
+        <table id="babysittingTable"></table>
+    </div>
 </main>
 <footer>
+
+    <button type="submit" style="display: none;" id="delete" onclick="supprimerBabySitting()">Supprimer un babysitting</button>
+
     <div class="navigation">
         <ul>
             <li class="list" data-color="#dc143c">
-                <a href="home.html" onclick="afficherBabySittings()">
-                    <span class="icon"><i class="far fa-home"></i></span>
+                <a href="home.html">
+                    <span class="icon"><i class="far fa-home" style="color: #1562A2"></i></span>
                 </a>
             </li>
             <li class="list" data-color="#05c46b">
@@ -58,7 +49,7 @@ align-items: center;">
             </li>
             <li class="list" data-color="#0fbcf9">
                 <a href="utile.html">
-                    <span class="icon"><i class="far fa-question-circle" style="color: #1562A2"></i></span>
+                    <span class="icon"><i class="far fa-question-circle"></i></span>
                 </a>
             </li>
         </ul>
@@ -66,8 +57,31 @@ align-items: center;">
 
 </footer>
 
+<script>
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("/utils/service-worker.js").then((registration) => {
+            console.log("Service Worker enregistré avec succès.");
+
+            // Détecter les mises à jour
+            registration.onupdatefound = () => {
+                const newWorker = registration.installing;
+                newWorker.onstatechange = () => {
+                    if (newWorker.state === "activated" && navigator.serviceWorker.controller) {
+                        console.log("Nouvelle version disponible, rechargement en cours...");
+                        window.location.reload(); // Recharger automatiquement la page
+                    }
+                };
+            };
+        }).catch((error) => {
+            console.error("Échec de l'enregistrement du Service Worker:", error);
+        });
+    }
+
+
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/sql-wasm.js"></script>
 <script src="src/js/dbFunctions.js"></script>
 <script src="src/js/scripts.js"></script>
+
 </body>
 </html>

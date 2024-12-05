@@ -5,50 +5,46 @@ async function initDb() {
         locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/${file}`
     });
 
+    // Fonction pour créer les tables si elles n'existent pas
+    const createTables = () => {
+        db.run(`CREATE TABLE IF NOT EXISTS utilisateur (
+            nom TEXT PRIMARY KEY, 
+            prenom TEXT
+        )`);
+        db.run(`CREATE TABLE IF NOT EXISTS babysittings (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, 
+            date TEXT, 
+            volume_horaire REAL,
+            salaire_heure INTEGER, 
+            salaire REAL
+        )`);
+    };
+
     // Restaurer la base de données depuis localStorage si disponible
     const savedDb = localStorage.getItem("babysittingDb");
     if (savedDb) {
         const uint8Array = new Uint8Array(JSON.parse(savedDb));
         db = new SQL.Database(uint8Array); // Charger la base sauvegardée
-        db.run(`CREATE TABLE IF NOT EXISTS utilisateur (
-            nom TEXT PRIMARY KEY, 
-            prenom TEXT
-        )`);
-        db.run(`CREATE TABLE IF NOT EXISTS babysittings (
-            id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            date TEXT, 
-            volume_horaire DOUBLE,
-            salaire_heure INTEGER, 
-            salaire REAL
-        )`);
         console.log("Base de données restaurée depuis localStorage");
     } else {
         db = new SQL.Database(); // Nouvelle base
-        db.run(`CREATE TABLE IF NOT EXISTS babysittings (
-            id INTEGER PRIMARY KEY AUTOINCREMENT, 
-            date TEXT, 
-            volume_horaire DOUBLE,
-            salaire_heure INTEGER, 
-            salaire REAL
-        )`);
-        db.run(`CREATE TABLE IF NOT EXISTS utilisateur (
-            nom TEXT PRIMARY KEY, 
-            prenom TEXT
-        )`);
         console.log("Nouvelle base de données créée");
     }
-    // Vérifie si tu es sur la page stats.html avant d'exécuter la fonction
-    if (window.location.pathname.endsWith("stats.html")) {
+
+    createTables(); // Créer les tables (utilisateur et babysittings)
+
+    // Vérifie si tu es sur la page stats.html ou index.html
+    const pathname = window.location.pathname;
+
+    if (pathname.endsWith("stats.html")) {
         sommeTotaleGagnee();
         sommeMoyenneHeure();
         sommeTotaleHeure();
-    }
-    // Vérifie si tu es sur la page stats.html avant d'exécuter la fonction
-    if (window.location.pathname.endsWith("index.html")) {
+    } else if (pathname.endsWith("index.html")) {
         checkUtilisateur();
     }
-
 }
+
 
 function sauvegarderDb() {
     if (db) {
@@ -110,7 +106,7 @@ function ajouterBabySitting() {
     }
 
     const date = document.getElementById('date').value;
-    const volumeHoraire = parseInt(document.getElementById('volumeHoraire').value);
+    const volumeHoraire = parseFloat(document.getElementById('volumeHoraire').value);
     const salaire = parseFloat(document.getElementById('salaire').value);
     const salaire_heure = parseFloat(document.getElementById('salaire_heure').value);
 

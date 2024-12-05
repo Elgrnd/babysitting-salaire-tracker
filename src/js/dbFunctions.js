@@ -80,6 +80,7 @@ function ajouterUtilisateur() {
     db.run("INSERT INTO utilisateur (nom, prenom) VALUES (?, ?)", [nom, prenom]);
     sauvegarderDb();
     afficherMessageBienvenue(prenom);
+    afficherBabySittings();
 }
 
 function checkUtilisateur() {

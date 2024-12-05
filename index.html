@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script>
+        if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone) {
+            window.location.href = "home.html";
+        }
+    </script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>My Babysittings</title>
@@ -27,31 +33,6 @@ margin: 15px"
 <p>Pour cela, cliques sur  <img id="share" src="ressources/img/share.png" alt="share"> puis sur</p>
 <p><span class="ecart">Sur l'écran d'accueil</span>.</p>
 <p>Voilà, vous pouvez désormais lancer MyBabySittings depuis l'écran d'accueil.</p>
-
-<script>
-    if (window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone) {
-        // L'application est déjà installée, redirigez directement
-        window.location.href = "home.html";
-    }
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/utils/service-worker.js").then((registration) => {
-            console.log("Service Worker enregistré avec succès.");
-
-            // Détecter les mises à jour
-            registration.onupdatefound = () => {
-                const newWorker = registration.installing;
-                newWorker.onstatechange = () => {
-                    if (newWorker.state === "activated" && navigator.serviceWorker.controller) {
-                        console.log("Nouvelle version disponible, rechargement en cours...");
-                        window.location.reload(); // Recharger automatiquement la page
-                    }
-                };
-            };
-        }).catch((error) => {
-            console.error("Échec de l'enregistrement du Service Worker:", error);
-        });
-    }
-</script>
 
 </body>
 </html>

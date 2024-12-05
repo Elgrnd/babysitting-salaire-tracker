@@ -57,28 +57,6 @@
 
 </footer>
 
-<script>
-    if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/utils/service-worker.js").then((registration) => {
-            console.log("Service Worker enregistré avec succès.");
-
-            // Détecter les mises à jour
-            registration.onupdatefound = () => {
-                const newWorker = registration.installing;
-                newWorker.onstatechange = () => {
-                    if (newWorker.state === "activated" && navigator.serviceWorker.controller) {
-                        console.log("Nouvelle version disponible, rechargement en cours...");
-                        window.location.reload(); // Recharger automatiquement la page
-                    }
-                };
-            };
-        }).catch((error) => {
-            console.error("Échec de l'enregistrement du Service Worker:", error);
-        });
-    }
-
-
-</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/sql-wasm.js"></script>
 <script src="src/js/dbFunctions.js"></script>
 <script src="src/js/scripts.js"></script>

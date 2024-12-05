@@ -13,15 +13,23 @@
             crossorigin="anonymous"
     />
 </head>
-<body>
+<body style="display: flex;
+justify-content: center; /* Centre horizontalement */
+align-items: center;">
 <header>
 
 </header>
 <main>
 
-    <div id="heures_totales"></div>
-    <div id="salaire_total"></div>
-    <div id="salaire_moyen"></div>
+    <div class="stats-container">
+        <div id="heures_totales"></div>
+        <hr>
+        <div id="salaire_total"></div>
+        <hr>
+        <div id="salaire_moyen"></div>
+        <hr>
+        <div id="primes"></div>
+    </div>
 
 </main>
 <footer>
@@ -29,7 +37,7 @@
     <div class="navigation">
         <ul>
             <li class="list" data-color="#dc143c">
-                <a href="index.html" onclick="afficherBabySittings()">
+                <a href="index.html">
                     <span class="icon"><i class="far fa-home"></i></span>
                 </a>
             </li>

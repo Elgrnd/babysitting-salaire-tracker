@@ -40,6 +40,7 @@ async function initDb() {
         sommeTotaleGagnee();
         sommeMoyenneHeure();
         sommeTotaleHeure();
+        calculerPrimes();
     } else if (pathname.endsWith("index.html")) {
         checkUtilisateur();
     }
@@ -106,7 +107,17 @@ function ajouterBabySitting() {
     }
 
     const date = document.getElementById('date').value;
-    const volumeHoraire = parseFloat(document.getElementById('volumeHoraire').value);
+    const heures = document.getElementById('volumeHoraire').value;
+    const hour = parseInt(heures.split("h")[0]);
+    let min;
+    if (heures.split("h")[1] === '') {
+        min = 0;
+    } else {
+        min = parseInt(heures.split("h")[1]);
+    }
+    console.log(hour);
+    console.log(min);
+    const volumeHoraire = timeToDecimal(hour, min);
     const salaire = parseFloat(document.getElementById('salaire').value);
     const salaire_heure = parseFloat(document.getElementById('salaire_heure').value);
 
@@ -126,7 +137,7 @@ function afficherBabySittings() {
         return;
     }
 
-    const result = db.exec("SELECT * FROM babysittings");
+    const result = db.exec("SELECT * FROM babysittings ORDER BY date");
     const titre = document.getElementById("historique");
     const table = document.getElementById("babysittingTable");
 
@@ -234,6 +245,10 @@ function decimalToTime(decimalHours) {
     return `${hours}h ${minutes}m`;
 }
 
+function timeToDecimal(hours, minutes) {
+    return hours + (minutes / 60); // Additionne les heures et les minutes converties en fraction d'heure
+}
+
 function sommeTotaleHeure() {
     if (!db) {
         console.error("La base de données n'est pas encore initialisée.");
@@ -256,7 +271,33 @@ function sommeTotaleHeure() {
     }
 }
 
+function calculerPrimes() {
+    if (!db) {
+        console.error("La base de données n'est pas encore initialisée.");
+        return;
+    }
+    let montantPrimes = 0;
+    const result = db.exec('SELECT * FROM babysittings');
+    const primes = document.getElementById("primes")
 
+    if (!primes) {
+        console.error("Élément avec l'ID 'primes' introuvable.");
+        return;
+    }
+
+    if (result.length === 0 || result[0].values.length === 0 || result[0].values[0][0] === null) {
+        primes.innerHTML = "<h3>Primes totales : 0.00 €</h3>";
+    } else {
+        result[0].values.forEach(row => {
+            const salaire = row[4];
+            const volume_horaire = row[2];
+            const salaire_heure = row[3];
+
+            montantPrimes += salaire - volume_horaire * salaire_heure;
+        })
+        primes.innerHTML = `<h3> Primes totales : ${montantPrimes.toFixed(2)} €</h3>`
+    }
+}
 
 
 window.addEventListener("beforeunload", sauvegarderDb); // Sauvegarder avant de quitter la page

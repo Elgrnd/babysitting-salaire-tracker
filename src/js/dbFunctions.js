@@ -17,7 +17,7 @@ async function initDb() {
         db.run(`CREATE TABLE IF NOT EXISTS babysittings (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             date TEXT, 
-            volume_horaire REAL,
+            volume_horaire DOUBLE,
             salaire_heure INTEGER, 
             salaire REAL
         )`);
@@ -27,7 +27,7 @@ async function initDb() {
         db.run(`CREATE TABLE IF NOT EXISTS babysittings (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             date TEXT, 
-            volume_horaire REAL,
+            volume_horaire DOUBLE,
             salaire_heure INTEGER, 
             salaire REAL
         )`);

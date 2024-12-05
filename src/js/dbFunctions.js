@@ -17,7 +17,7 @@ async function initDb() {
         db.run(`CREATE TABLE IF NOT EXISTS babysittings (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             date TEXT, 
-            volume_horaire INTEGER,
+            volume_horaire REAL,
             salaire_heure INTEGER, 
             salaire REAL
         )`);
@@ -27,7 +27,7 @@ async function initDb() {
         db.run(`CREATE TABLE IF NOT EXISTS babysittings (
             id INTEGER PRIMARY KEY AUTOINCREMENT, 
             date TEXT, 
-            volume_horaire INTEGER,
+            volume_horaire REAL,
             salaire_heure INTEGER, 
             salaire REAL
         )`);
@@ -37,8 +37,17 @@ async function initDb() {
         )`);
         console.log("Nouvelle base de données créée");
     }
+    // Vérifie si tu es sur la page stats.html avant d'exécuter la fonction
+    if (window.location.pathname.endsWith("stats.html")) {
+        sommeTotaleGagnee();
+        sommeMoyenneHeure();
+        sommeTotaleHeure();
+    }
+    // Vérifie si tu es sur la page stats.html avant d'exécuter la fonction
+    if (window.location.pathname.endsWith("index.html")) {
+        checkUtilisateur();
+    }
 
-    checkUtilisateur(); // Vérifier si un utilisateur existe
 }
 
 function sauvegarderDb() {
@@ -200,6 +209,58 @@ function sommeTotaleGagnee() {
         salaire_total.innerHTML = `<h3>Total gagné : ${totalSalaire.toFixed(2)} €</h3>`;
     }
 }
+
+function sommeMoyenneHeure() {
+    if (!db) {
+        console.error("La base de données n'est pas encore initialisée.");
+        return;
+    }
+
+    const result = db.exec("SELECT AVG(salaire_heure) AS moyenne FROM babysittings");
+    const salaire_moyen = document.getElementById("salaire_moyen");
+
+    if (!salaire_moyen) {
+        console.error("Élément avec l'ID 'salaire_moyen' introuvable.");
+        return;
+    }
+
+    if (result.length === 0 || result[0].values.length === 0 || result[0].values[0][0] === null) {
+        salaire_moyen.innerHTML = "<h3>Salaire moyen par heure : 0.00 €</h3>";
+    } else {
+        const totalMoyen = result[0].values[0][0];
+        salaire_moyen.innerHTML = `<h3>Salaire moyen par heure : ${totalMoyen.toFixed(2)} €</h3>`;
+    }
+}
+
+function decimalToTime(decimalHours) {
+    const hours = Math.floor(decimalHours);
+    const minutes = Math.round((decimalHours - hours) * 60);
+    return `${hours}h ${minutes}m`;
+}
+
+function sommeTotaleHeure() {
+    if (!db) {
+        console.error("La base de données n'est pas encore initialisée.");
+        return;
+    }
+
+    const result = db.exec("SELECT SUM(volume_horaire) AS heures FROM babysittings");
+    const heures_totales = document.getElementById("heures_totales");
+
+    if (!heures_totales) {
+        console.error("Élément avec l'ID 'heures_totales' introuvable.");
+        return;
+    }
+
+    if (result.length === 0 || result[0].values.length === 0 || result[0].values[0][0] === null) {
+        heures_totales.innerHTML = "<h3>Aucun babysitting effectué</h3>";
+    } else {
+        const heuresTotales = result[0].values[0][0];
+        heures_totales.innerHTML = `<h3>Heures totales effectuées : ${decimalToTime(heuresTotales)}</h3>`;
+    }
+}
+
+
 
 
 window.addEventListener("beforeunload", sauvegarderDb); // Sauvegarder avant de quitter la page

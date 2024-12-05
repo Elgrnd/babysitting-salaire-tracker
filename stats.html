@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Stats babysitting</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/sql-wasm.js"></script>
-    <script src="src/js/dbFunctions.js"></script>
-    <script src="src/js/scripts.js"></script>
     <link rel="stylesheet" href="ressources/css/styles.css">
     <link rel="manifest" href="utils/manifest.json">
     <link
@@ -17,40 +14,45 @@
     />
 </head>
 <body>
-    <header>
+<header>
 
-    </header>
-    <main>
+</header>
+<main>
 
-        <div id="salaire_total"></div>
+    <div id="heures_totales"></div>
+    <div id="salaire_total"></div>
+    <div id="salaire_moyen"></div>
 
-    </main>
-    <footer>
-    
-        <div class="navigation">
-            <ul>
-                <li class="list" data-color="#dc143c">
-                    <a href="index.html" onclick="afficherBabySittings()">
-                        <span class="icon"><i class="far fa-home"></i></span>
-                    </a>
-                </li>
-                <li class="list" data-color="#05c46b">
-                    <a href="new.html">
-                        <span class="icon"><i class="far fa-plus"></i></span>
-                    </a>
-                </li>
-                <li class="list" data-color="#0fbcf9">
-                    <a href="stats.html" onclick="sommeTotaleGagnee()">
-                        <span class="icon"><i class="far fa-chart-line" style="color: #1562A2"></i></span>
-                    </a>
-                </li>
-                <li class="list" data-color="#0fbcf9">
-                    <a href="utile.html">
-                        <span class="icon"><i class="far fa-question-circle"></i></span>
-                    </a>
-                </li>
-            </ul>
-        </div>
-    
-    </footer>
+</main>
+<footer>
+
+    <div class="navigation">
+        <ul>
+            <li class="list" data-color="#dc143c">
+                <a href="index.html" onclick="afficherBabySittings()">
+                    <span class="icon"><i class="far fa-home"></i></span>
+                </a>
+            </li>
+            <li class="list" data-color="#05c46b">
+                <a href="new.html">
+                    <span class="icon"><i class="far fa-plus"></i></span>
+                </a>
+            </li>
+            <li class="list" data-color="#0fbcf9">
+                <a href="stats.html">
+                    <span class="icon"><i class="far fa-chart-line" style="color: #1562A2"></i></span>
+                </a>
+            </li>
+            <li class="list" data-color="#0fbcf9">
+                <a href="utile.html">
+                    <span class="icon"><i class="far fa-question-circle"></i></span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+</footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.6.1/sql-wasm.js"></script>
+<script src="src/js/dbFunctions.js"></script>
 </body>
+</html>

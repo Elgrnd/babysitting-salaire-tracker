@@ -179,6 +179,29 @@ function supprimerBabySitting() {
     afficherBabySittings();
 }
 
+function sommeTotaleGagnee() {
+    if (!db) {
+        console.error("La base de données n'est pas encore initialisée.");
+        return;
+    }
+
+    const result = db.exec("SELECT SUM(salaire) AS total FROM babysittings");
+    const salaire_total = document.getElementById("salaire_total");
+
+    if (!salaire_total) {
+        console.error("Élément avec l'ID 'salaire_total' introuvable.");
+        return;
+    }
+
+    if (result.length === 0 || result[0].values.length === 0 || result[0].values[0][0] === null) {
+        salaire_total.innerHTML = "<h3>Total gagné : 0.00 €</h3>";
+    } else {
+        const totalSalaire = result[0].values[0][0];
+        salaire_total.innerHTML = `<h3>Total gagné : ${totalSalaire.toFixed(2)} €</h3>`;
+    }
+}
+
+
 window.addEventListener("beforeunload", sauvegarderDb); // Sauvegarder avant de quitter la page
 initDb();
 

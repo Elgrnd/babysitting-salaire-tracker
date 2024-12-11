@@ -21,7 +21,7 @@
     <h2>Ajouter un babysitting</h2>
     <form onsubmit="ajouterBabySitting(); this.form.reset(); return false;">
         <input type="date" id="date" value="2024-12-01" required>
-        <input type="time" id="volumeHoraire" step="900" placeholder="Volume horaire (Ex : 1h30, 5h)" step=".01" required>
+        <input type="time" id="volumeHoraire" step="900" value="00:00" required>
         <input type="number" id="salaire_heure" placeholder="Salaire par heure" required>
         <input type="number" step="0.01" id="salaire" placeholder="Salaire" required>
         <button type="submit">Ajouter</button>

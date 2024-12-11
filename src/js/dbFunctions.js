@@ -108,27 +108,23 @@ function ajouterBabySitting() {
     }
 
     const date = document.getElementById('date').value;
-    const heures = document.getElementById('volumeHoraire').value;
-    const hour = parseInt(heures.split("h")[0]);
-    let min;
-    if (heures.split("h")[1] === '') {
-        min = 0;
-    } else {
-        min = parseInt(heures.split("h")[1]);
-    }
-    console.log(hour);
-    console.log(min);
-    const volumeHoraire = timeToDecimal(hour, min);
+    const heures = document.getElementById('volumeHoraire').value; // Récupère l'heure au format HH:MM
     const salaire = parseFloat(document.getElementById('salaire').value);
     const salaire_heure = parseFloat(document.getElementById('salaire_heure').value);
 
-    if (!date || isNaN(volumeHoraire) || isNaN(salaire)) {
+    // Vérifier que le champ "heures" est bien renseigné
+    if (!date || !heures || isNaN(salaire) || isNaN(salaire_heure)) {
         alert("Veuillez remplir tous les champs !");
         return;
     }
 
-    db.run("INSERT INTO babysittings (date, volume_horaire, salaire_heure, salaire) VALUES (?, ?, ?, ?)", [date, volumeHoraire, salaire_heure, salaire]);
+    // Convertir le format HH:MM en volume horaire décimal
+    const [hour, min] = heures.split(":").map(val => parseInt(val)); // Extraire les heures et minutes
+    const volumeHoraire = timeToDecimal(hour, min);
 
+    db.run("INSERT INTO babysittings (date, volume_horaire, salaire_heure, salaire) VALUES (?, ?, ?, ?)", [date, volumeHoraire, salaire_heure, salaire]);
+    
+    alert("Babysitting ajouté avec succès");
     sauvegarderDb(); // Sauvegarder la base après chaque modification
 }
 

@@ -43,6 +43,8 @@ async function initDb() {
         calculerPrimes();
     } else if (pathname.endsWith("home.html")) {
         checkUtilisateur();
+    } else if (pathname.endsWith("new.html")) {
+        genererOptionsTemps();
     }
 }
 
@@ -126,6 +128,19 @@ function ajouterBabySitting() {
     
     alert("Babysitting ajouté avec succès");
     sauvegarderDb(); // Sauvegarder la base après chaque modification
+}
+
+function genererOptionsTemps() {
+    const select = document.getElementById('volumeHoraire');
+    for (let hour = 0; hour < 24; hour++) {
+        for (let min = 0; min < 60; min += 15) {
+            const value = `${String(hour).padStart(2, '0')}:${String(min).padStart(2, '0')}`;
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value;
+            select.appendChild(option);
+        }
+    }
 }
 
 function afficherBabySittings() {

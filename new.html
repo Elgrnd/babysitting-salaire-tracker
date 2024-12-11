@@ -22,8 +22,10 @@
     <form onsubmit="ajouterBabySitting(); this.form.reset(); return false;">
         <input type="date" id="date" value="2024-12-01" required>
         <div>
-            <input type="text" id="" placeholder="Volume horaire :" disabled>
-            <input type="time" id="volumeHoraire" step="900" value="00:00" required>
+            <input type="text" id="" placeholder="Volume horaire" disabled>
+            <select id="volumeHoraire">
+                <!-- Options générées par JavaScript -->
+            </select>
 
         </div>
         <input type="number" id="salaire_heure" placeholder="Salaire par heure" required>

@@ -167,10 +167,17 @@ function afficherBabySittings() {
             tr.setAttribute("id", `row-${rowId}`);
 
             // Ajoutez les cellules de la ligne
+            let i = 0;
             row.slice(1).forEach(value => {
                 const td = document.createElement("td");
-                td.textContent = value;
+                if (i == 1) {
+                    td.textContent = decimalToTime(value);
+                } else {
+                    td.textContent = value;
+                }
+        
                 tr.appendChild(td);
+                i += 1;
             });
             tr.addEventListener("click", () => {
                 rows.forEach(r => r.removeAttribute("selected"));
